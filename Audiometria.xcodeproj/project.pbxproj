@@ -12,6 +12,7 @@
 		358F4F821CCAB66900A77D67 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358F4F801CCAB66900A77D67 /* Main.storyboard */; };
 		358F4F841CCAB66900A77D67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 358F4F831CCAB66900A77D67 /* Assets.xcassets */; };
 		358F4F871CCAB66900A77D67 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358F4F851CCAB66900A77D67 /* LaunchScreen.storyboard */; };
+		358F4F901CCADC7600A77D67 /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 358F4F8F1CCADC7600A77D67 /* ResearchKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		358F4F831CCAB66900A77D67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		358F4F861CCAB66900A77D67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		358F4F881CCAB66900A77D67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		358F4F8F1CCADC7600A77D67 /* ResearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ResearchKit.framework; path = Carthage/Build/iOS/ResearchKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +31,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				358F4F901CCADC7600A77D67 /* ResearchKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +41,7 @@
 		358F4F701CCAB66900A77D67 = {
 			isa = PBXGroup;
 			children = (
+				358F4F911CCADC7F00A77D67 /* Frameworks */,
 				358F4F7B1CCAB66900A77D67 /* Audiometria */,
 				358F4F7A1CCAB66900A77D67 /* Products */,
 			);
@@ -64,6 +68,14 @@
 			path = Audiometria;
 			sourceTree = "<group>";
 		};
+		358F4F911CCADC7F00A77D67 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				358F4F8F1CCADC7600A77D67 /* ResearchKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,6 +86,7 @@
 				358F4F751CCAB66900A77D67 /* Sources */,
 				358F4F761CCAB66900A77D67 /* Frameworks */,
 				358F4F771CCAB66900A77D67 /* Resources */,
+				358F4F8E1CCAB7A700A77D67 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -129,6 +142,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		358F4F8E1CCAB7A700A77D67 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/ResearchKit.framework",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		358F4F751CCAB66900A77D67 /* Sources */ = {
@@ -251,6 +281,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Audiometria/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.darkshine.Audiometria;
@@ -262,6 +296,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Audiometria/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.darkshine.Audiometria;
