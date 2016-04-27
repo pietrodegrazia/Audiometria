@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -18,22 +19,72 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ofq-jH-Mpt">
-                                <rect key="frame" x="277" y="285" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <rect key="frame" x="243" y="285" width="114" height="30"/>
+                                <state key="normal" title="Form de entrada"/>
                                 <connections>
                                     <action selector="button:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tNc-fL-SpE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MNl-7N-lJF">
+                                <rect key="frame" x="242" y="323" width="118" height="30"/>
+                                <state key="normal" title="Medidor de ruído"/>
+                                <connections>
+                                    <segue destination="Wvi-Za-Cbd" kind="presentation" id="dK8-Hu-yMU"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Ofq-jH-Mpt" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ZdE-Z5-PkC"/>
+                            <constraint firstItem="MNl-7N-lJF" firstAttribute="top" secondItem="Ofq-jH-Mpt" secondAttribute="bottom" constant="8" symbolic="YES" id="g6n-Zk-FBh"/>
+                            <constraint firstItem="MNl-7N-lJF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="242" id="hXZ-IC-KCk"/>
                             <constraint firstItem="Ofq-jH-Mpt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ioB-uz-FJ0"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+        </scene>
+        <!--Noise Meter View Controller-->
+        <scene sceneID="DWG-Wc-vkN">
+            <objects>
+                <viewController id="Wvi-Za-Cbd" customClass="NoiseMeterViewController" customModule="Audiometria" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="anm-CL-7tH"/>
+                        <viewControllerLayoutGuide type="bottom" id="snd-xa-MSH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="t1P-cq-xUG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h3T-ds-H3F">
+                                <rect key="frame" x="284" y="293" width="33" height="14"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IK6-7a-EL9">
+                                <rect key="frame" x="277" y="342" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="buttonPressed:" destination="Wvi-Za-Cbd" eventType="touchUpInside" id="bsF-R7-Ytu"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="snd-xa-MSH" firstAttribute="top" secondItem="h3T-ds-H3F" secondAttribute="bottom" constant="293" id="544-dX-0kF"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="h3T-ds-H3F" secondAttribute="trailing" constant="263" id="D52-tc-yj6"/>
+                            <constraint firstItem="h3T-ds-H3F" firstAttribute="top" secondItem="anm-CL-7tH" secondAttribute="bottom" priority="500" constant="273" id="FCW-Fb-1CZ"/>
+                            <constraint firstItem="h3T-ds-H3F" firstAttribute="leading" secondItem="t1P-cq-xUG" secondAttribute="leading" constant="284" id="OYT-04-Fk7"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="levelHeightConstraint" destination="FCW-Fb-1CZ" id="c1r-DE-Tp3"/>
+                        <outlet property="levelView" destination="h3T-ds-H3F" id="USs-Zv-175"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sam-05-b6n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1041" y="659"/>
         </scene>
     </scenes>
 </document>
