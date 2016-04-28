@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -18,32 +18,138 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ofq-jH-Mpt">
-                                <rect key="frame" x="243" y="285" width="114" height="30"/>
-                                <state key="normal" title="Form de entrada"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v2L-vc-vvh">
+                                <rect key="frame" x="230" y="285" width="141" height="30"/>
+                                <state key="normal" title="Realizar Audiometria"/>
                                 <connections>
-                                    <action selector="button:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tNc-fL-SpE"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MNl-7N-lJF">
-                                <rect key="frame" x="242" y="323" width="118" height="30"/>
-                                <state key="normal" title="Medidor de ruído"/>
-                                <connections>
-                                    <segue destination="Wvi-Za-Cbd" kind="presentation" id="dK8-Hu-yMU"/>
+                                    <action selector="startAudiometryProcedure:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ugq-71-COA"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Ofq-jH-Mpt" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ZdE-Z5-PkC"/>
-                            <constraint firstItem="MNl-7N-lJF" firstAttribute="top" secondItem="Ofq-jH-Mpt" secondAttribute="bottom" constant="8" symbolic="YES" id="g6n-Zk-FBh"/>
-                            <constraint firstItem="MNl-7N-lJF" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="242" id="hXZ-IC-KCk"/>
-                            <constraint firstItem="Ofq-jH-Mpt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ioB-uz-FJ0"/>
+                            <constraint firstItem="v2L-vc-vvh" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="XYt-OD-70s"/>
+                            <constraint firstItem="v2L-vc-vvh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="mka-IH-G5G"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="784" y="475"/>
+        </scene>
+        <!--Tone Test View Controller-->
+        <scene sceneID="2g7-9J-DoB">
+            <objects>
+                <viewController restorationIdentifier="toneTest" storyboardIdentifier="toneTest" id="NWF-1f-HBO" customClass="ToneTestViewController" customModule="Audiometria" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4xr-Uh-ucx"/>
+                        <viewControllerLayoutGuide type="bottom" id="aX8-AG-GZL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hSk-pA-tgj">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="mute" translatesAutoresizingMaskIntoConstraints="NO" id="eWo-8D-Ez2">
+                                <rect key="frame" x="250" y="250" width="100" height="100"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f4m-iV-CNC">
+                                <rect key="frame" x="219" y="83" width="162" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="M38-tW-d2M"/>
+                                    <constraint firstAttribute="width" constant="162" id="lyF-Ua-hg3"/>
+                                </constraints>
+                                <state key="normal" title="COMEÇAR"/>
+                                <connections>
+                                    <action selector="startProcedure:" destination="NWF-1f-HBO" eventType="touchUpInside" id="q6E-I9-6Ce"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Posicione a 50cm da cabeça do paciente" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FDP-hd-LTI">
+                                <rect key="frame" x="144" y="46" width="313" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Toque abaixo quando conseguir escutar o som." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dNp-hI-5JT">
+                                <rect key="frame" x="119" y="374" width="362" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qej-XJ-fnW">
+                                <rect key="frame" x="241" y="431" width="118" height="51"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="118" id="6rz-4M-VmW"/>
+                                    <constraint firstAttribute="height" constant="51" id="xJD-cM-v7O"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <state key="normal" title="Escutei"/>
+                                <connections>
+                                    <action selector="userHeardButtonTapped:" destination="NWF-1f-HBO" eventType="touchUpInside" id="0Uu-qW-Avu"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amplitude:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0t-pw-gVg">
+                                <rect key="frame" x="14" y="571" width="83" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="40" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W7K-P4-pQ8">
+                                <rect key="frame" x="110" y="571" width="21" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Frequencia:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MbL-Ax-2Cb">
+                                <rect key="frame" x="160" y="571" width="90" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yf2-Ir-NLT">
+                                <rect key="frame" x="267" y="571" width="39" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="dNp-hI-5JT" firstAttribute="top" secondItem="eWo-8D-Ez2" secondAttribute="bottom" constant="24" id="BMc-VU-Q4O"/>
+                            <constraint firstItem="W7K-P4-pQ8" firstAttribute="centerY" secondItem="B0t-pw-gVg" secondAttribute="centerY" id="EdB-oW-pxl"/>
+                            <constraint firstItem="Yf2-Ir-NLT" firstAttribute="centerY" secondItem="MbL-Ax-2Cb" secondAttribute="centerY" id="HuQ-L1-8y5"/>
+                            <constraint firstItem="f4m-iV-CNC" firstAttribute="centerX" secondItem="eWo-8D-Ez2" secondAttribute="centerX" id="JQl-k9-N8P"/>
+                            <constraint firstItem="Qej-XJ-fnW" firstAttribute="top" secondItem="dNp-hI-5JT" secondAttribute="bottom" constant="36" id="KYM-D2-PiL"/>
+                            <constraint firstItem="W7K-P4-pQ8" firstAttribute="leading" secondItem="B0t-pw-gVg" secondAttribute="trailing" constant="13" id="LEN-z4-mfG"/>
+                            <constraint firstItem="MbL-Ax-2Cb" firstAttribute="centerY" secondItem="W7K-P4-pQ8" secondAttribute="centerY" id="Q7Z-Rz-ZyV"/>
+                            <constraint firstItem="eWo-8D-Ez2" firstAttribute="centerX" secondItem="hSk-pA-tgj" secondAttribute="centerX" id="QqA-ZN-bOw"/>
+                            <constraint firstItem="FDP-hd-LTI" firstAttribute="centerX" secondItem="hSk-pA-tgj" secondAttribute="centerX" id="bWL-kj-yNk"/>
+                            <constraint firstItem="MbL-Ax-2Cb" firstAttribute="leading" secondItem="B0t-pw-gVg" secondAttribute="trailing" constant="68" id="cvF-mo-xSI"/>
+                            <constraint firstItem="f4m-iV-CNC" firstAttribute="top" secondItem="FDP-hd-LTI" secondAttribute="bottom" constant="16" id="h6s-AV-E9b"/>
+                            <constraint firstItem="Qej-XJ-fnW" firstAttribute="leading" secondItem="MbL-Ax-2Cb" secondAttribute="trailing" constant="-9" id="iMw-x5-cJ1"/>
+                            <constraint firstItem="Yf2-Ir-NLT" firstAttribute="leading" secondItem="MbL-Ax-2Cb" secondAttribute="trailing" constant="17" id="jRC-Bc-mJf"/>
+                            <constraint firstItem="eWo-8D-Ez2" firstAttribute="centerY" secondItem="hSk-pA-tgj" secondAttribute="centerY" id="lKv-B4-uhD"/>
+                            <constraint firstItem="B0t-pw-gVg" firstAttribute="leading" secondItem="hSk-pA-tgj" secondAttribute="leadingMargin" constant="-6" id="noq-XQ-Cg8"/>
+                            <constraint firstItem="aX8-AG-GZL" firstAttribute="top" secondItem="B0t-pw-gVg" secondAttribute="bottom" constant="8" id="pkM-W0-MWV"/>
+                            <constraint firstItem="FDP-hd-LTI" firstAttribute="top" secondItem="4xr-Uh-ucx" secondAttribute="bottom" constant="26" id="ra8-BD-7N7"/>
+                            <constraint firstItem="dNp-hI-5JT" firstAttribute="centerX" secondItem="eWo-8D-Ez2" secondAttribute="centerX" id="s63-jB-Wlt"/>
+                            <constraint firstItem="Qej-XJ-fnW" firstAttribute="centerX" secondItem="dNp-hI-5JT" secondAttribute="centerX" id="zKf-dx-GRS"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="iMw-x5-cJ1"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="currentAmplitudeLabel" destination="W7K-P4-pQ8" id="hKB-nf-38n"/>
+                        <outlet property="currentFrequencyLabel" destination="Yf2-Ir-NLT" id="xTs-6S-fWV"/>
+                        <outlet property="soundPlayingIcon" destination="eWo-8D-Ez2" id="FPW-ar-dVR"/>
+                        <outlet property="userHeardButton" destination="Qej-XJ-fnW" id="Fp0-U3-2H6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6aZ-Bp-o9v" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1482" y="475"/>
         </scene>
         <!--Noise Meter View Controller-->
         <scene sceneID="DWG-Wc-vkN">
@@ -84,7 +190,10 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sam-05-b6n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1041" y="659"/>
+            <point key="canvasLocation" x="1068" y="1231"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="mute" width="50" height="50"/>
+    </resources>
 </document>

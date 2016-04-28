@@ -14,6 +14,8 @@
 		358F4F871CCAB66900A77D67 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 358F4F851CCAB66900A77D67 /* LaunchScreen.storyboard */; };
 		358F4F901CCADC7600A77D67 /* ResearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 358F4F8F1CCADC7600A77D67 /* ResearchKit.framework */; };
 		35EC14D41CCFFF6300974C18 /* NoiseMeterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EC14D21CCFFF6300974C18 /* NoiseMeterViewController.swift */; };
+		52B4A98C1CD28DF500AFED66 /* AVTonePlayerUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B4A98B1CD28DF500AFED66 /* AVTonePlayerUnit.swift */; };
+		52B4A98E1CD290DF00AFED66 /* ToneTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B4A98D1CD290DF00AFED66 /* ToneTestViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,9 @@
 		358F4F881CCAB66900A77D67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		358F4F8F1CCADC7600A77D67 /* ResearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ResearchKit.framework; path = Carthage/Build/iOS/ResearchKit.framework; sourceTree = "<group>"; };
 		35EC14D21CCFFF6300974C18 /* NoiseMeterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoiseMeterViewController.swift; sourceTree = "<group>"; };
+		520D22451CD12FE8002931F1 /* Audiometria-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Audiometria-Bridging-Header.h"; sourceTree = "<group>"; };
+		52B4A98B1CD28DF500AFED66 /* AVTonePlayerUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVTonePlayerUnit.swift; sourceTree = "<group>"; };
+		52B4A98D1CD290DF00AFED66 /* ToneTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToneTestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +72,8 @@
 				358F4F831CCAB66900A77D67 /* Assets.xcassets */,
 				358F4F851CCAB66900A77D67 /* LaunchScreen.storyboard */,
 				358F4F881CCAB66900A77D67 /* Info.plist */,
+				52B4A98B1CD28DF500AFED66 /* AVTonePlayerUnit.swift */,
+				52B4A98D1CD290DF00AFED66 /* ToneTestViewController.swift */,
 			);
 			path = Audiometria;
 			sourceTree = "<group>";
@@ -75,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				358F4F8F1CCADC7600A77D67 /* ResearchKit.framework */,
+				520D22451CD12FE8002931F1 /* Audiometria-Bridging-Header.h */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -112,6 +120,7 @@
 				TargetAttributes = {
 					358F4F781CCAB66900A77D67 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = YYWFQ73E8M;
 					};
 				};
 			};
@@ -171,6 +180,8 @@
 				358F4F7F1CCAB66900A77D67 /* ViewController.swift in Sources */,
 				358F4F7D1CCAB66900A77D67 /* AppDelegate.swift in Sources */,
 				35EC14D41CCFFF6300974C18 /* NoiseMeterViewController.swift in Sources */,
+				52B4A98C1CD28DF500AFED66 /* AVTonePlayerUnit.swift in Sources */,
+				52B4A98E1CD290DF00AFED66 /* ToneTestViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,6 +296,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -293,6 +307,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.darkshine.Audiometria;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Audiometria-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -300,6 +317,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
@@ -308,6 +328,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.darkshine.Audiometria;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Audiometria-Bridging-Header.h";
 			};
 			name = Release;
 		};
