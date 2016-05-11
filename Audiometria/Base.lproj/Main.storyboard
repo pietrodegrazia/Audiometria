@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Wvi-Za-Cbd">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -35,7 +35,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="784" y="475"/>
+            <point key="canvasLocation" x="973" y="481"/>
         </scene>
         <!--Tone Test View Controller-->
         <scene sceneID="2g7-9J-DoB">
@@ -149,7 +149,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6aZ-Bp-o9v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1482" y="475"/>
+            <point key="canvasLocation" x="1778" y="488"/>
         </scene>
         <!--Noise Meter View Controller-->
         <scene sceneID="DWG-Wc-vkN">
@@ -163,34 +163,59 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h3T-ds-H3F">
-                                <rect key="frame" x="284" y="293" width="33" height="14"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IK6-7a-EL9">
-                                <rect key="frame" x="277" y="342" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IK6-7a-EL9">
+                                <rect key="frame" x="242" y="487" width="116" height="30"/>
+                                <state key="normal" title="Start audiometry"/>
                                 <connections>
                                     <action selector="buttonPressed:" destination="Wvi-Za-Cbd" eventType="touchUpInside" id="bsF-R7-Ytu"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="RSJ-md-iCV">
+                                <rect key="frame" x="20" y="293" width="560" height="14"/>
+                                <subviews>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="o7k-g2-KBl" userLabel="channel0">
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="2"/>
+                                    </progressView>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lfh-jU-FoY" userLabel="channel1">
+                                        <rect key="frame" x="0.0" y="12" width="560" height="2"/>
+                                    </progressView>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hmC-ps-ruO">
+                                <rect key="frame" x="271" y="559" width="59" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Peak" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHT-vI-Hwr">
+                                <rect key="frame" x="281" y="525" width="38" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="snd-xa-MSH" firstAttribute="top" secondItem="h3T-ds-H3F" secondAttribute="bottom" constant="293" id="544-dX-0kF"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="h3T-ds-H3F" secondAttribute="trailing" constant="263" id="D52-tc-yj6"/>
-                            <constraint firstItem="h3T-ds-H3F" firstAttribute="top" secondItem="anm-CL-7tH" secondAttribute="bottom" priority="500" constant="273" id="FCW-Fb-1CZ"/>
-                            <constraint firstItem="h3T-ds-H3F" firstAttribute="leading" secondItem="t1P-cq-xUG" secondAttribute="leading" constant="284" id="OYT-04-Fk7"/>
+                            <constraint firstItem="hmC-ps-ruO" firstAttribute="top" secondItem="zHT-vI-Hwr" secondAttribute="bottom" constant="13" id="5NL-CB-0cW"/>
+                            <constraint firstAttribute="trailing" secondItem="RSJ-md-iCV" secondAttribute="trailing" constant="20" id="J56-jT-5hW"/>
+                            <constraint firstItem="RSJ-md-iCV" firstAttribute="leading" secondItem="t1P-cq-xUG" secondAttribute="leading" constant="20" id="KvB-4I-G1e"/>
+                            <constraint firstItem="zHT-vI-Hwr" firstAttribute="top" secondItem="IK6-7a-EL9" secondAttribute="bottom" constant="8" id="OhL-eC-VfS"/>
+                            <constraint firstItem="hmC-ps-ruO" firstAttribute="centerX" secondItem="t1P-cq-xUG" secondAttribute="centerX" id="Vis-f2-h1t"/>
+                            <constraint firstItem="RSJ-md-iCV" firstAttribute="centerY" secondItem="t1P-cq-xUG" secondAttribute="centerY" id="WOv-fT-ZrM"/>
+                            <constraint firstItem="snd-xa-MSH" firstAttribute="top" secondItem="hmC-ps-ruO" secondAttribute="bottom" constant="20" id="XsP-mV-HfK"/>
+                            <constraint firstItem="IK6-7a-EL9" firstAttribute="centerX" secondItem="t1P-cq-xUG" secondAttribute="centerX" id="Zx3-HF-EXW"/>
+                            <constraint firstItem="RSJ-md-iCV" firstAttribute="centerX" secondItem="t1P-cq-xUG" secondAttribute="centerX" id="eo4-kz-rwE"/>
+                            <constraint firstItem="zHT-vI-Hwr" firstAttribute="centerX" secondItem="t1P-cq-xUG" secondAttribute="centerX" id="fyv-g1-VIn"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="levelHeightConstraint" destination="FCW-Fb-1CZ" id="c1r-DE-Tp3"/>
-                        <outlet property="levelView" destination="h3T-ds-H3F" id="USs-Zv-175"/>
+                        <outlet property="channel0ProgressView" destination="o7k-g2-KBl" id="YYn-Ga-dwB"/>
+                        <outlet property="channel1ProgressView" destination="lfh-jU-FoY" id="Zio-TL-gsD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sam-05-b6n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1068" y="1231"/>
+            <point key="canvasLocation" x="1463" y="1181"/>
         </scene>
     </scenes>
     <resources>

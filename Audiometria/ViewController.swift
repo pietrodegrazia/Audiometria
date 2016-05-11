@@ -18,6 +18,9 @@ class ViewController: UIViewController, ORKTaskViewControllerDelegate {
     }
     
     @IBAction func startAudiometryProcedure(sender: AnyObject) {
+        // Noise metter
+//        let Audiometry
+        
         let myStep = ORKInstructionStep(identifier: "intro")
         myStep.title = "Bem Vindo"
         let task = ORKOrderedTask(identifier: "task", steps: [myStep, formStep])

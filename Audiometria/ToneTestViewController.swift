@@ -9,98 +9,67 @@ import AVFoundation
 import UIKit
 
 class ToneTestViewController: UIViewController {
+    
     @IBOutlet weak var soundPlayingIcon: UIImageView!
     @IBOutlet weak var currentFrequencyLabel: UILabel!
     @IBOutlet weak var currentAmplitudeLabel: UILabel!
     @IBOutlet weak var userHeardButton: UIButton!
     
+    // MARK: Private constants
+    private let InitialFrequencyIndex = 0
+    private let InitialAmplitudeIndex = 1
+    private let IntervalBetweenFrequencies:NSTimeInterval = 2.0
+    private let IntervalBetweenAmplitudes:NSTimeInterval = 4.0
     
-    var timer = NSTimer()
+//    private let db = 20 * log10(v_noise * v_ref) + db_ref
     
-    let intervalBetweenFrequencies = 4
-    let frequencies = [1000, 2000, 4000, 8000, 500]
-    var currentFrequencyIndex = 0 {
+    private var currentStepIndex = 0
+    private let frequencies = [1000.0, 2000, 4000, 8000, 500]
+    private let amplitudes = [20.0, 40, 60]
+    
+    // MARK: Private vars
+    private var engine = AVAudioEngine()
+    private var tone = AVTonePlayerUnit()
+    private var timer = NSTimer()
+    private var testStarted = false
+    
+    private var currentAmplitudeIndex: Int = 0 {
         didSet {
-            currentAmplitude = initialAmplitude
-        }
-    }
-    
-    var isPlaying = false {
-        didSet (newValue) {
-            if !newValue {
-                print("stop sound")
-                engine.mainMixerNode.volume = 0.0
-                userHeardButton.enabled = false
-                tone.stop()
-                let image = UIImage(named: "mute")
-                soundPlayingIcon.image = image
-                
-            } else {
-                let image = UIImage(named: "playing")
-                soundPlayingIcon.image = image
-                userHeardButton.enabled = true
-                print("start sound")
-                let freq = frequencies[currentFrequencyIndex]
-                print("freq: \(freq)")
-                tone.frequency = Double(freq)
-                currentFrequencyLabel.text = String(freq)
-                if let resultForFreq = resultDictionary[freq] {
-                    if resultForFreq != initialAmplitude {
-                        currentFrequencyIndex += 1
-                    } else {
-                        currentAmplitude -= amplitudeDelta
-                    }
-                } else {
-                    currentAmplitude += amplitudeDelta
-                }
-                
-                print("amp: \(currentAmplitude)")
-//                tone.play()
-                tone.preparePlaying()
-                tone.play()
-                engine.mainMixerNode.volume = 1.0
-
+            createTimerWithTimerInterval(IntervalBetweenAmplitudes)
+            
+            let amplitude = amplitudes[currentAmplitudeIndex]
+            currentAmplitudeLabel.text = String(amplitude)
+            tone.amplitude = amplitude/100
+            if testStarted {
+                playSound()
             }
         }
     }
     
-    var resultDictionary = [Int: Double]()
-    let initialAmplitude = 0.40
-    let amplitudeDelta = 0.20
-    
-    var currentAmplitude: Double = 0 {
+    private var currentFrequencyIndex: Int = 0 {
         didSet {
-            tone.amplitude = Double(currentAmplitude)
-            currentAmplitudeLabel.text = String(currentAmplitude)
+            createTimerWithTimerInterval(IntervalBetweenFrequencies)
+            
+            currentAmplitudeIndex = InitialAmplitudeIndex
+            
+            let frequency = frequencies[currentFrequencyIndex]
+            currentFrequencyLabel.text = String(frequency)
+            tone.frequency = frequency
+            if testStarted {
+                playSound()
+            }
         }
     }
     
     
-    @IBAction func userHeardButtonTapped(sender: UIButton) {
-        let freq = frequencies[currentFrequencyIndex]
-        resultDictionary[freq] = currentAmplitude
-        print(resultDictionary)
-    }
-    
-    var engine = AVAudioEngine()
-    var tone = AVTonePlayerUnit()
-    
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAudio()
     }
     
-    @IBAction func startProcedure(button: UIButton) {
-        button.enabled = false
-        timer = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: #selector(timedOut), userInfo: nil, repeats: true)
-    }
-    
-    func timedOut(sender: AnyObject){
-        print("timedOut")
-        isPlaying = !isPlaying
-    }
-    
-    func setupAudio(){
+    // MARK: Private helpers
+    private func setupAudio(){
         let format = AVAudioFormat(standardFormatWithSampleRate: tone.sampleRate, channels: 1)
         let mixer = engine.mainMixerNode
         
@@ -112,5 +81,142 @@ class ToneTestViewController: UIViewController {
             print(error)
         }
     }
+    
+    private func setInitialIndexes() {
+        currentFrequencyIndex = InitialFrequencyIndex
+        currentAmplitudeIndex = InitialAmplitudeIndex
+    }
+    
+    private func startTest() {
+        setInitialIndexes()
+        testStarted = true
+        playSound()
+    }
+    
+    private func playSound() {
+        stopSound()
+        
+        print("playSound")
+        tone.preparePlaying()
+        tone.play()
+        engine.mainMixerNode.volume = 1.0
+    }
+    
+    private func stopSound() {
+        print("stopSound")
+        tone.stop()
+        engine.mainMixerNode.volume = 0.0
+    }
+    
+    private func createTimerWithTimerInterval(interval:NSTimeInterval) {
+        print(#function)
+        timer.invalidate()
+        timer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector: #selector(timedOut), userInfo: nil, repeats: true)
+    }
+    
+    @objc private func timedOut(sender: AnyObject){
+        print("timedOut")
+        if isLastAmplitudeForTest {
+            if isLastFrequency {
+                endTest()
+            } else {
+                currentFrequencyIndex += 1
+            }
+        } else {
+            // amplitude == 40
+            currentAmplitudeIndex += 1
+        }
+    }
+    
+    private func endTest() {
+        print("endTest")
+        timer.invalidate()
+        stopSound()
+    }
+    
+    private var isLastAmplitudeForTest: Bool {
+        get {
+            return [0, amplitudes.count-1].contains(currentAmplitudeIndex)
+        }
+    }
+    
+    private var isLastFrequency: Bool {
+        get {
+            return currentFrequencyIndex == frequencies.count-1
+        }
+    }
+    
+    // MARK: IBActions
+    @IBAction func userHeardButtonTapped(sender: UIButton) {
+        if isLastAmplitudeForTest {
+            if isLastFrequency {
+                // finish test
+                endTest()
+            } else {
+                currentAmplitudeIndex = InitialAmplitudeIndex
+            }
+        } else {
+            currentAmplitudeIndex -= 1
+        }
+    }
+    
+    @IBAction func startProcedure(button: UIButton) {
+//        button.enabled = false
+        startTest()
+    }
+    
+    
 }
+
+
+//func ==(lhs:ToneTestStep, rhs:ToneTestStep) -> Bool {
+//    return lhs.frequency == rhs.frequency && lhs.amplitude == rhs.amplitude
+//}
+//
+//struct FrequencyStep {
+//
+//}
+//
+//struct ToneTestStep {
+//    var frequency: Double
+//    var amplitude: [Double]
+//    private var currentAmplitudeIndex = -1
+//
+//    init(frequency: Double, amplitudes: [Double], initialAmplitude: Double) {
+//        self.frequency = frequency
+//        self.amplitude = amplitudes
+//
+//        for (index, amplitude) in amplitudes.enumerate() {
+//            if amplitude == initialAmplitude {
+//                currentAmplitudeIndex = index
+//                break
+//            }
+//        }
+//        assert(currentAmplitudeIndex == -1, "Initial amplitude not found on amplitudes list")
+//    }
+//
+//    mutating func increaseAmplitude() {
+//        currentAmplitudeIndex += 1
+//    }
+//
+//    mutating func decreaseAmplitude() {
+//        currentAmplitudeIndex -= 1
+//    }
+//
+//    static func createTonesWithFrequency(frequency: Double, andAmplitudes amplitudes:[Double]) -> [ToneTestStep] {
+//        var tones = [ToneTestStep]()
+//        for amplitude in amplitudes {
+//            tones += [ToneTestStep(frequency: frequency, amplitude: amplitude)]
+//        }
+//        return tones
+//    }
+//
+//    static func createTonesWithAmplitude(amplitude: Double, andFrequencies frequencies:[Double]) -> [ToneTestStep] {
+//        var tones = [ToneTestStep]()
+//        for frequency in frequencies {
+//            tones += [ToneTestStep(frequency: frequency, amplitude: amplitude)]
+//        }
+//        return tones
+//    }
+//}
 

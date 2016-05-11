@@ -16,6 +16,12 @@
 		35EC14D41CCFFF6300974C18 /* NoiseMeterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35EC14D21CCFFF6300974C18 /* NoiseMeterViewController.swift */; };
 		52B4A98C1CD28DF500AFED66 /* AVTonePlayerUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B4A98B1CD28DF500AFED66 /* AVTonePlayerUnit.swift */; };
 		52B4A98E1CD290DF00AFED66 /* ToneTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52B4A98D1CD290DF00AFED66 /* ToneTestViewController.swift */; };
+		6266DD1F1CE2CAA800000BD3 /* NoiseMeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6266DD1E1CE2CAA800000BD3 /* NoiseMeterView.swift */; };
+		6295C3E31CE2BBCD003B09E5 /* NSDate+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6295C3E21CE2BBCD003B09E5 /* NSDate+Extensions.swift */; };
+		6295C3E61CE2BBFC003B09E5 /* NoiseMeter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6295C3E51CE2BBFC003B09E5 /* NoiseMeter.swift */; };
+		6295C3E81CE2C0B7003B09E5 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6295C3E71CE2C0B7003B09E5 /* Utils.swift */; };
+		62D5988D1CDD5EEC00E8A3EB /* LevelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62D5988C1CDD5EEC00E8A3EB /* LevelController.swift */; };
+		62E3E23B1CD400B900E1FF97 /* ToneTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62E3E23A1CD400B900E1FF97 /* ToneTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +37,12 @@
 		520D22451CD12FE8002931F1 /* Audiometria-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Audiometria-Bridging-Header.h"; sourceTree = "<group>"; };
 		52B4A98B1CD28DF500AFED66 /* AVTonePlayerUnit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVTonePlayerUnit.swift; sourceTree = "<group>"; };
 		52B4A98D1CD290DF00AFED66 /* ToneTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToneTestViewController.swift; sourceTree = "<group>"; };
+		6266DD1E1CE2CAA800000BD3 /* NoiseMeterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoiseMeterView.swift; sourceTree = "<group>"; };
+		6295C3E21CE2BBCD003B09E5 /* NSDate+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Extensions.swift"; sourceTree = "<group>"; };
+		6295C3E51CE2BBFC003B09E5 /* NoiseMeter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoiseMeter.swift; sourceTree = "<group>"; };
+		6295C3E71CE2C0B7003B09E5 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		62D5988C1CDD5EEC00E8A3EB /* LevelController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelController.swift; sourceTree = "<group>"; };
+		62E3E23A1CD400B900E1FF97 /* ToneTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToneTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,15 +77,19 @@
 		358F4F7B1CCAB66900A77D67 /* Audiometria */ = {
 			isa = PBXGroup;
 			children = (
-				35EC14D21CCFFF6300974C18 /* NoiseMeterViewController.swift */,
 				358F4F7C1CCAB66900A77D67 /* AppDelegate.swift */,
-				358F4F7E1CCAB66900A77D67 /* ViewController.swift */,
-				358F4F801CCAB66900A77D67 /* Main.storyboard */,
 				358F4F831CCAB66900A77D67 /* Assets.xcassets */,
-				358F4F851CCAB66900A77D67 /* LaunchScreen.storyboard */,
-				358F4F881CCAB66900A77D67 /* Info.plist */,
 				52B4A98B1CD28DF500AFED66 /* AVTonePlayerUnit.swift */,
+				358F4F881CCAB66900A77D67 /* Info.plist */,
+				358F4F851CCAB66900A77D67 /* LaunchScreen.storyboard */,
+				62D5988C1CDD5EEC00E8A3EB /* LevelController.swift */,
+				358F4F801CCAB66900A77D67 /* Main.storyboard */,
+				6295C3E41CE2BBE5003B09E5 /* NoiseMeter */,
+				35EC14D21CCFFF6300974C18 /* NoiseMeterViewController.swift */,
+				62E3E23A1CD400B900E1FF97 /* ToneTest.swift */,
 				52B4A98D1CD290DF00AFED66 /* ToneTestViewController.swift */,
+				6295C3E11CE2BBB4003B09E5 /* Utils */,
+				358F4F7E1CCAB66900A77D67 /* ViewController.swift */,
 			);
 			path = Audiometria;
 			sourceTree = "<group>";
@@ -85,6 +101,24 @@
 				520D22451CD12FE8002931F1 /* Audiometria-Bridging-Header.h */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6295C3E11CE2BBB4003B09E5 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6295C3E21CE2BBCD003B09E5 /* NSDate+Extensions.swift */,
+				6295C3E71CE2C0B7003B09E5 /* Utils.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		6295C3E41CE2BBE5003B09E5 /* NoiseMeter */ = {
+			isa = PBXGroup;
+			children = (
+				6295C3E51CE2BBFC003B09E5 /* NoiseMeter.swift */,
+				6266DD1E1CE2CAA800000BD3 /* NoiseMeterView.swift */,
+			);
+			path = NoiseMeter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -120,7 +154,7 @@
 				TargetAttributes = {
 					358F4F781CCAB66900A77D67 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = YYWFQ73E8M;
+						DevelopmentTeam = 8WCPHDZJPJ;
 					};
 				};
 			};
@@ -180,7 +214,13 @@
 				358F4F7F1CCAB66900A77D67 /* ViewController.swift in Sources */,
 				358F4F7D1CCAB66900A77D67 /* AppDelegate.swift in Sources */,
 				35EC14D41CCFFF6300974C18 /* NoiseMeterViewController.swift in Sources */,
+				62D5988D1CDD5EEC00E8A3EB /* LevelController.swift in Sources */,
+				6295C3E31CE2BBCD003B09E5 /* NSDate+Extensions.swift in Sources */,
+				6295C3E81CE2C0B7003B09E5 /* Utils.swift in Sources */,
+				62E3E23B1CD400B900E1FF97 /* ToneTest.swift in Sources */,
 				52B4A98C1CD28DF500AFED66 /* AVTonePlayerUnit.swift in Sources */,
+				6295C3E61CE2BBFC003B09E5 /* NoiseMeter.swift in Sources */,
+				6266DD1F1CE2CAA800000BD3 /* NoiseMeterView.swift in Sources */,
 				52B4A98E1CD290DF00AFED66 /* ToneTestViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

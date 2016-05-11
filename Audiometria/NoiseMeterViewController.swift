@@ -6,39 +6,60 @@
 //  Copyright © 2016 darkshine. All rights reserved.
 //
 
+import AVFoundation
 import UIKit
 
 class NoiseMeterViewController: UIViewController {
-
-    @IBOutlet weak var levelView: UIView!
-    @IBOutlet weak var levelHeightConstraint: NSLayoutConstraint!
     
+    // MARK: Private vars
+    private var noiseMeter = NoiseMeter(channels: [0,1])
+    
+    // MARK: Outlets
+    @IBOutlet weak var channel0ProgressView: UIProgressView!
+    @IBOutlet weak var channel1ProgressView: UIProgressView!
+    
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        levelHeightConstraint.constant = 0
-        levelView.frame.size.height = 300
-        levelView.backgroundColor = .blackColor()
-        
-    }
-
-    @IBAction func buttonPressed(sender: AnyObject) {
-        levelHeightConstraint.constant = 100
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        
+        setupNoiseMeter()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // MARK: IBAction
+    @IBAction func buttonPressed(sender: AnyObject) {
+        noiseMeter.isMeasuring ? noiseMeter.stopMeasure() : noiseMeter.startMeasureWithInterval(0.1)
     }
-    */
+    
+    // MARK: Private helpers
+    private func setupNoiseMeter() {
+        noiseMeter.delegate = self
+        noiseMeter.startMeasureWithInterval(0.1)
+    }
+    
+}
 
+// MARK: - NoiseMeterDelegate
+extension NoiseMeterViewController: NoiseMeterDelegate {
+    
+    func noiseMeter(noiseMeter: NoiseMeter, didOccurrError error: ErrorType) {
+        print(error)
+    }
+    
+    func noiseMeter(noiseMeter: NoiseMeter, didMeasurePower power: Float, forChannel channel: Int) {
+        let mappedPower = map(power, inMin: -160, inMax: 160).floatValue
+        switch channel {
+        case 0:
+            channel0ProgressView.setProgress(mappedPower, animated: true)
+        
+        case 1:
+            channel1ProgressView.setProgress(mappedPower, animated: true)
+        
+        default:
+            print("Unknown channel")
+            
+        }
+        
+        print("power(\(channel)): \(power)")
+    }
+    
 }
