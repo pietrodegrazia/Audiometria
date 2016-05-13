@@ -13,6 +13,7 @@ class NoiseMeterViewController: UIViewController {
     
     // MARK: Private vars
     private var noiseMeter = NoiseMeter(channels: [0,1])
+    private let interval:NSTimeInterval = 1/60
     
     // MARK: Outlets
     @IBOutlet weak var channel0ProgressView: UIProgressView!
@@ -27,13 +28,13 @@ class NoiseMeterViewController: UIViewController {
     
     // MARK: IBAction
     @IBAction func buttonPressed(sender: AnyObject) {
-        noiseMeter.isMeasuring ? noiseMeter.stopMeasure() : noiseMeter.startMeasureWithInterval(0.1)
+        noiseMeter.isMeasuring ? noiseMeter.stopMeasure() : noiseMeter.startMeasureWithInterval(interval)
     }
     
     // MARK: Private helpers
     private func setupNoiseMeter() {
         noiseMeter.delegate = self
-        noiseMeter.startMeasureWithInterval(0.1)
+        noiseMeter.startMeasureWithInterval(interval)
     }
     
 }
