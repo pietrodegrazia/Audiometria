@@ -6,8 +6,6 @@
 //  Copyright © 2016 darkshine. All rights reserved.
 //
 
-import Foundation
-
 extension NSDate {
     
     func toStringWithFormat(format:String) -> String {
