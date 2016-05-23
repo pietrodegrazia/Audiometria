@@ -9,21 +9,35 @@
 import AVFoundation
 import UIKit
 
+enum Segue: String {
+    
+    case ShowResult
+    
+}
+
 class ToneTestStep {
     
     var frequency: Double
     var amplitude: Double
-    var heard: ToneTestStep?
-    var notHeard: ToneTestStep?
+    var heardTest: ToneTestStep?
+    var notHeardTest: ToneTestStep?
+    var heard = false
     
-    init(frequency: Double, amplitude: Double, heard: ToneTestStep?, notHeard: ToneTestStep?) {
+    init(frequency: Double, amplitude: Double, heardTest: ToneTestStep?, notHeardTest: ToneTestStep?) {
         self.frequency = frequency
         self.amplitude = amplitude
-        self.heard = heard
-        self.notHeard = notHeard
+        self.heardTest = heardTest
+        self.notHeardTest = notHeardTest
     }
     
+    var description:String {
+        return "ToneTestStep { frequency: \(frequency), amplitude: \(amplitude) }"
+    }
+    
+    
 }
+
+typealias Tone = (Frequency:Double, Amplitude:Double)
 
 class ToneTestViewController: UIViewController {
     
@@ -33,75 +47,72 @@ class ToneTestViewController: UIViewController {
     @IBOutlet weak var userHeardButton: UIButton!
     
     // MARK: Private constants
-    private let amplitudes = [20.0, 40.0, 60.0]
     private let frequencies = [1000.0, 2000.0, 4000.0, 8000.0, 500.0]
-    private let InitialAmplitudeIndex = 1
-    private let InitialFrequencyIndex = 0
-    private let IntervalBetweenAmplitudes: NSTimeInterval = 4.0
-    private let IntervalBetweenFrequencies: NSTimeInterval = 2.0
+    private let intervalBetweenAmplitudes: NSTimeInterval = 2.0
+    private let intervalBetweenFrequencies: NSTimeInterval = 1.0
+    private let toneDuration: NSTimeInterval = 1.0
     
     // MARK: Private vars
-    private var trees = [ToneTestStep]()
-    private var currentStepIndex = 0
+    private var currentToneTestStep:ToneTestStep? {
+        willSet(newValue) {
+            print(newValue?.description)
+            stopSound()
+            if newValue == nil {
+                endTest()
+            } else {
+                if newValue?.frequency != currentToneTestStep?.frequency {
+                    delay(intervalBetweenFrequencies) {
+                        Queue.Main.execute {
+                            print("trocou frequencia")
+                            self.playSound()
+                        }
+                    }
+                } else if newValue?.amplitude != currentToneTestStep?.amplitude {
+                    delay(intervalBetweenAmplitudes) {
+                        Queue.Main.execute {
+                            print("trocou amplitude")
+                            self.playSound()
+                        }
+                    }
+                } else {
+                    print("outro caso")
+                }
+            }
+        }
+    }
+    
     private var engine = AVAudioEngine()
+    private var firstToneTestStep:ToneTestStep?
+    private var heardTones = [Double:[Double]]()
     private var testStarted = false
     private var timer = NSTimer()
     private var tone = AVTonePlayerUnit()
-    
-    private var currentAmplitudeIndex: Int = 0 {
-        didSet {
-            createTimerWithTimerInterval(IntervalBetweenAmplitudes)
-            
-            let amplitude = amplitudes[currentAmplitudeIndex]
-            currentAmplitudeLabel.text = "Amplitude: \(amplitude) dB"
-            tone.amplitude = amplitude/100
-            if testStarted {
-                playSound()
-            }
-        }
-    }
-    
-    private var currentFrequencyIndex: Int = 0 {
-        didSet {
-            if currentFrequencyIndex != InitialFrequencyIndex {
-                stopSound()
-            }
-            
-            createTimerWithTimerInterval(IntervalBetweenFrequencies)
-            
-            currentAmplitudeIndex = InitialAmplitudeIndex
-            
-            let frequency = frequencies[currentFrequencyIndex]
-            currentFrequencyLabel.text = "Frequência: \(frequency) Hz"
-            tone.frequency = frequency
-            if testStarted {
-                playSound()
-            }
-            
-        }
-    }
-    
     
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupAudio()
-        generateTrees()
+        generateTree()
     }
     
     // MARK: Private helpers
-    private func generateTrees() {
+    private func generateTree() {
+        var lastToneTestStep:ToneTestStep?
         for (index, freq) in frequencies.enumerate() {
-            let heardStep = ToneTestStep(frequency: freq, amplitude: 20.0, heard: nil, notHeard: nil)
-            let notHeardStep = ToneTestStep(frequency: freq, amplitude: 60.0, heard: nil, notHeard: nil)
-            let step = ToneTestStep(frequency: freq, amplitude: 40.0, heard: heardStep, notHeard: notHeardStep)
+            let heardStep = ToneTestStep(frequency: freq, amplitude: 20.0, heardTest: nil, notHeardTest: nil)
+            let notHeardStep = ToneTestStep(frequency: freq, amplitude: 60.0, heardTest: nil, notHeardTest: nil)
+            let step = ToneTestStep(frequency: freq, amplitude: 40.0, heardTest: heardStep, notHeardTest: notHeardStep)
             
-            if index > 0 {
-                trees.last!.heard = step
-                trees.last!.notHeard = step
-            } 
+            if index == 0 {
+                firstToneTestStep = step
+            } else {
+                lastToneTestStep!.heardTest?.heardTest = step
+                lastToneTestStep!.heardTest?.notHeardTest = step
+                lastToneTestStep!.notHeardTest?.heardTest = step
+                lastToneTestStep!.notHeardTest?.notHeardTest = step
+            }
             
-            trees += [step]
+            lastToneTestStep = step
         }
     }
     
@@ -115,25 +126,24 @@ class ToneTestViewController: UIViewController {
             engine.connect(tone, to: mixer, format: format)
             try engine.start()
         } catch let error as NSError {
-            print(error)
+            hvprint(error)
         }
     }
     
-    private func setInitialIndexes() {
-        currentFrequencyIndex = InitialFrequencyIndex
-        currentAmplitudeIndex = InitialAmplitudeIndex
-    }
-    
     private func startTest() {
-        setInitialIndexes()
-        testStarted = true
-        playSound()
+        currentToneTestStep = firstToneTestStep
     }
     
     private func playSound() {
-        stopSound()
+        userHeardButton.enabled = true
         
-        print("playSound")
+        self.currentFrequencyLabel.text = "Frequência: \(currentToneTestStep!.frequency)"
+        self.currentAmplitudeLabel.text = "Amplitude: \(currentToneTestStep!.amplitude)"
+        self.createTimerWithTimerInterval(self.toneDuration)
+        
+        tone.amplitude = currentToneTestStep!.amplitude/100
+        tone.frequency = currentToneTestStep!.frequency
+        
         tone.preparePlaying()
         tone.play()
         engine.mainMixerNode.volume = 1.0
@@ -141,135 +151,63 @@ class ToneTestViewController: UIViewController {
     }
     
     private func stopSound() {
-        print("stopSound")
+        userHeardButton.enabled = false
+        
         tone.stop()
         engine.mainMixerNode.volume = 0.0
         soundPlayingImageView.image = UIImage(named: "mute")
     }
     
+    private func endTest() {
+        timer.invalidate()
+        stopSound()
+        
+        performSegueWithIdentifier(Segue.ShowResult.rawValue, sender: nil)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == Segue.ShowResult.rawValue {
+            if let vc = segue.destinationViewController as? ResultViewController {
+                vc.results = heardTones
+            }
+        }
+    }
+    
     private func createTimerWithTimerInterval(interval: NSTimeInterval) {
-        print(#function)
         timer.invalidate()
         timer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector: #selector(timedOut), userInfo: nil, repeats: true)
     }
     
-    @objc private func timedOut(sender: AnyObject){
-        print("timedOut")
-        if isLastAmplitudeForTest {
-            if isLastFrequency {
-                endTest()
-            } else {
-                currentFrequencyIndex += 1
-            }
-        } else {
-            // amplitude == 40
-            currentAmplitudeIndex += 1
-        }
-    }
-    
-    private func endTest() {
-        print("endTest")
+    @objc private func timedOut(){
         timer.invalidate()
-        stopSound()
-    }
-    
-    private var isLastAmplitudeForTest: Bool {
-        get {
-            return [0, amplitudes.count-1].contains(currentAmplitudeIndex)
-        }
-    }
-    
-    private var isLastFrequency: Bool {
-        get {
-            return currentFrequencyIndex == frequencies.count-1
-        }
-    }
-    
-    private func showTimerWithTimeInterval(time: NSTimeInterval) {
-        //        let diceRoll = CGFloat(Int(arc4random_uniform(7))*50)
-        let circleWidth = CGFloat(200)
-        let circleHeight = circleWidth
-        
-        // Create a new CircleView
-        let circleView = CircleView(frame: CGRectMake(0, 0, circleWidth, circleHeight))
-        
-        view.addSubview(circleView)
-        
-        // Animate the drawing of the circle over the course of 1 second
-        //        circleView.animateCircle(1.0)
+        currentToneTestStep = currentToneTestStep!.notHeardTest
     }
     
     // MARK: IBActions
     @IBAction func userHeardButtonTapped(sender: UIButton) {
-        if isLastAmplitudeForTest {
-            if isLastFrequency {
-                // finish test
-                endTest()
-            } else {
-                currentFrequencyIndex += 1
-            }
-        } else {
-            currentAmplitudeIndex -= 1
-        }
+        timer.invalidate()
+        let key = currentToneTestStep!.frequency
+        let el = currentToneTestStep!.amplitude
+        if case nil = heardTones[key]?.append(el) { heardTones[key] = [el] }
+        currentToneTestStep = currentToneTestStep!.heardTest
     }
     
     @IBAction func startProcedure(button: UIButton) {
-        //        button.enabled = false
         startTest()
     }
     
     
 }
 
-
-//func ==(lhs:ToneTestStep, rhs:ToneTestStep) -> Bool {
-//    return lhs.frequency == rhs.frequency && lhs.amplitude == rhs.amplitude
-//}
-//
-//struct FrequencyStep {
-//
-//}
-//
-//struct ToneTestStep {
-//    var frequency: Double
-//    var amplitude: [Double]
-//    private var currentAmplitudeIndex = -1
-//
-//    init(frequency: Double, amplitudes: [Double], initialAmplitude: Double) {
-//        self.frequency = frequency
-//        self.amplitude = amplitudes
-//
-//        for (index, amplitude) in amplitudes.enumerate() {
-//            if amplitude == initialAmplitude {
-//                currentAmplitudeIndex = index
-//                break
-//            }
-//        }
-//        assert(currentAmplitudeIndex == -1, "Initial amplitude not found on amplitudes list")
-//    }
-//
-//    mutating func increaseAmplitude() {
-//        currentAmplitudeIndex += 1
-//    }
-//
-//    mutating func decreaseAmplitude() {
-//        currentAmplitudeIndex -= 1
-//    }
-//
-//    static func createTonesWithFrequency(frequency: Double, andAmplitudes amplitudes:[Double]) -> [ToneTestStep] {
-//        var tones = [ToneTestStep]()
-//        for amplitude in amplitudes {
-//            tones += [ToneTestStep(frequency: frequency, amplitude: amplitude)]
-//        }
-//        return tones
-//    }
-//
-//    static func createTonesWithAmplitude(amplitude: Double, andFrequencies frequencies:[Double]) -> [ToneTestStep] {
-//        var tones = [ToneTestStep]()
-//        for frequency in frequencies {
-//            tones += [ToneTestStep(frequency: frequency, amplitude: amplitude)]
-//        }
-//        return tones
-//    }
-//}
-
+public extension SequenceType {
+    
+    /// Categorises elements of self into a dictionary, with the keys given by keyFunc
+    func categorise<U : Hashable>(@noescape keyFunc: Generator.Element -> U) -> [U:[Generator.Element]] {
+        var dict: [U:[Generator.Element]] = [:]
+        for el in self {
+            let key = keyFunc(el)
+            if case nil = dict[key]?.append(el) { dict[key] = [el] }
+        }
+        return dict
+    }
+}
