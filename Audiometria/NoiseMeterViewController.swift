@@ -11,6 +11,9 @@ import UIKit
 
 class NoiseMeterViewController: UIViewController {
     
+    @IBOutlet weak var amplitudeLabel: UILabel!
+    
+    
     // MARK: Private vars
     private var lastEnvironmentNoiseState = EnvironmentNoiseState.Forbidden {
         willSet(currentState) {
@@ -24,7 +27,7 @@ class NoiseMeterViewController: UIViewController {
     }
     
     // MARK: Private consts
-    private let interval:NSTimeInterval = 1/60
+    private let interval: NSTimeInterval = 1/60
     private let meterTable = MeterTableOC(minDB: -80)
     private let noiseMeter = NoiseMeter(channels: [0,1])
     
@@ -59,6 +62,7 @@ extension NoiseMeterViewController: NoiseMeterDelegate {
     }
     
     func noiseMeter(noiseMeter: NoiseMeter, didMeasurePower power: Float, forChannel channel: Int) {
+        amplitudeLabel.text = "\(power)"
         lastEnvironmentNoiseState = EnvironmentNoiseState(power: power)
     }
     

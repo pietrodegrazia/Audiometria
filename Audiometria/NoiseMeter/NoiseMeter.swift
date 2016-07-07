@@ -14,7 +14,7 @@ class NoiseMeter {
     // MARK: Private vars
     private var currentPower: [Int:Float] = [:]
     private var peakPower: [Int:Float] = [:]
-    private var measureTimer: NSTimer!
+    private var measureTimer: NSTimer?
     private var recorder: AVAudioRecorder!
     private var channels = [Int]()
     
@@ -49,7 +49,7 @@ class NoiseMeter {
     @objc func stopMeasure() {
         do {
             recorder.stop()
-            measureTimer.invalidate()
+            measureTimer?.invalidate()
             try AVAudioSession.sharedInstance().setActive(false)
         } catch let error {
             delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.ErrorDeactivatingSession(error))
@@ -70,7 +70,7 @@ class NoiseMeter {
     private func pauseMeasure() {
         do {
             recorder.pause()
-            measureTimer.invalidate()
+            measureTimer?.invalidate()
             try AVAudioSession.sharedInstance().setActive(false)
         } catch let error {
             delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.ErrorDeactivatingSession(error))
