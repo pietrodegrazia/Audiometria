@@ -19,7 +19,7 @@ class NoiseMeter {
     fileprivate var channels = [Int]()
     
     // MARK: Public vars
-    var isMeasuring:Bool {
+    var isMeasuring: Bool {
         get {
             return recorder.isRecording
         }
@@ -164,11 +164,9 @@ enum NoiseMeterError: Error {
 }
 
 // MARK: - NoiseMeterDelegate
-protocol NoiseMeterDelegate:class {
-    
+protocol NoiseMeterDelegate: class {
     func noiseMeter(_ noiseMeter:NoiseMeter, didMeasurePower power: Float, forChannel channel: Int)
     func noiseMeter(_ noiseMeter:NoiseMeter, didOccurrError error: Error)
-    
 }
 
 extension NoiseMeter {
