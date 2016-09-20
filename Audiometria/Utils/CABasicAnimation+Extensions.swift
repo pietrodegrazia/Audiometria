@@ -10,16 +10,16 @@ import QuartzCore
 
 extension CALayer {
     
-    func animateToBackgroundColor(color: CGColor, withDuration duration: CFTimeInterval = 0.1) {
+    func animateToBackgroundColor(_ color: CGColor, withDuration duration: CFTimeInterval = 0.1) {
         let animation = CABasicAnimation.setBackgroundColor(color, forLayer: self, withDuration: duration)
-        addAnimation(animation, forKey: nil)
+        add(animation, forKey: nil)
     }
     
 }
 
 extension CABasicAnimation {
     
-    static func setBackgroundColor(color: CGColor, forLayer layer: CALayer, withDuration duration: CFTimeInterval) -> CABasicAnimation {
+    static func setBackgroundColor(_ color: CGColor, forLayer layer: CALayer, withDuration duration: CFTimeInterval) -> CABasicAnimation {
         let animation = CABasicAnimation(keyPath: "backgroundColor")
         layer.backgroundColor = color
         animation.toValue = color
@@ -32,7 +32,7 @@ extension CABasicAnimation {
 
 extension CATransition {
     
-    static func fadeTransitionWithDuration(duration:CFTimeInterval = 0.2, timingFunction: CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)) -> CATransition {
+    static func fadeTransitionWithDuration(_ duration:CFTimeInterval = 0.2, timingFunction: CAMediaTimingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)) -> CATransition {
         let transition = CATransition()
         transition.timingFunction = timingFunction
         transition.type = kCATransitionFade

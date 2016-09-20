@@ -20,7 +20,7 @@ class ResultViewController: UIViewController {
         var sectionObjects : [Double]!
     }
     
-    private var objectArray = [Objects]()
+    fileprivate var objectArray = [Objects]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,24 +42,24 @@ class ResultViewController: UIViewController {
 extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return objectArray.count
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return objectArray[section].sectionObjects.count
     }
     
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
-        cell.textLabel?.text = "\(objectArray[indexPath.section].sectionObjects[indexPath.row])"
+        cell.textLabel?.text = "\(objectArray[(indexPath as NSIndexPath).section].sectionObjects[(indexPath as NSIndexPath).row])"
         
         return cell
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "\(objectArray[section].sectionName)"
     }
     

@@ -6,13 +6,13 @@
 //  Copyright © 2016 darkshine. All rights reserved.
 //
 
-extension NSDate {
+extension Date {
     
-    func toStringWithFormat(format:String) -> String {
-        let formatter = NSDateFormatter()
+    func toStringWithFormat(_ format:String) -> String {
+        let formatter = DateFormatter()
         formatter.dateFormat = format
         
-        return formatter.stringFromDate(self)
+        return formatter.string(from: self)
     }
     
 }

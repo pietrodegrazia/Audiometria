@@ -47,13 +47,13 @@ class ToneTestViewController: UIViewController {
     @IBOutlet weak var userHeardButton: UIButton!
     
     // MARK: Private constants
-    private let frequencies = [1000.0, 2000.0, 4000.0, 8000.0, 500.0]
-    private let intervalBetweenAmplitudes: NSTimeInterval = 2.0
-    private let intervalBetweenFrequencies: NSTimeInterval = 1.0
-    private let toneDuration: NSTimeInterval = 1.0
+    fileprivate let frequencies = [1000.0, 2000.0, 4000.0, 8000.0, 500.0]
+    fileprivate let intervalBetweenAmplitudes: TimeInterval = 2.0
+    fileprivate let intervalBetweenFrequencies: TimeInterval = 1.0
+    fileprivate let toneDuration: TimeInterval = 1.0
     
     // MARK: Private vars
-    private var currentToneTestStep:ToneTestStep? {
+    fileprivate var currentToneTestStep: ToneTestStep? {
         willSet(newValue) {
             print(newValue?.description)
             stopSound()
@@ -62,14 +62,14 @@ class ToneTestViewController: UIViewController {
             } else {
                 if newValue?.frequency != currentToneTestStep?.frequency {
                     delay(intervalBetweenFrequencies) {
-                        Queue.Main.execute {
+                        Queue.main.execute {
                             print("trocou frequencia")
                             self.playSound()
                         }
                     }
                 } else if newValue?.amplitude != currentToneTestStep?.amplitude {
                     delay(intervalBetweenAmplitudes) {
-                        Queue.Main.execute {
+                        Queue.main.execute {
                             print("trocou amplitude")
                             self.playSound()
                         }
@@ -81,12 +81,12 @@ class ToneTestViewController: UIViewController {
         }
     }
     
-    private var engine = AVAudioEngine()
-    private var firstToneTestStep:ToneTestStep?
-    private var heardTones = [Double:[Double]]()
-    private var testStarted = false
-    private var timer = NSTimer()
-    private var tone = AVTonePlayerUnit()
+    fileprivate var engine = AVAudioEngine()
+    fileprivate var firstToneTestStep:ToneTestStep?
+    fileprivate var heardTones = [Double:[Double]]()
+    fileprivate var testStarted = false
+    fileprivate var timer = Timer()
+    fileprivate var tone = AVTonePlayerUnit()
     
     // MARK: Lifecycle
     override func viewDidLoad() {
@@ -96,9 +96,9 @@ class ToneTestViewController: UIViewController {
     }
     
     // MARK: Private helpers
-    private func generateTree() {
+    fileprivate func generateTree() {
         var lastToneTestStep:ToneTestStep?
-        for (index, freq) in frequencies.enumerate() {
+        for (index, freq) in frequencies.enumerated() {
             let heardStep = ToneTestStep(frequency: freq, amplitude: 20.0, heardTest: nil, notHeardTest: nil)
             let notHeardStep = ToneTestStep(frequency: freq, amplitude: 60.0, heardTest: nil, notHeardTest: nil)
             let step = ToneTestStep(frequency: freq, amplitude: 40.0, heardTest: heardStep, notHeardTest: notHeardStep)
@@ -116,13 +116,13 @@ class ToneTestViewController: UIViewController {
         }
     }
     
-    private func setupAudio() {
+    fileprivate func setupAudio() {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             let format = AVAudioFormat(standardFormatWithSampleRate: tone.sampleRate, channels: 1)
             let mixer = engine.mainMixerNode
             
-            engine.attachNode(tone)
+            engine.attach(tone)
             engine.connect(tone, to: mixer, format: format)
             try engine.start()
         } catch let error as NSError {
@@ -130,12 +130,12 @@ class ToneTestViewController: UIViewController {
         }
     }
     
-    private func startTest() {
+    fileprivate func startTest() {
         currentToneTestStep = firstToneTestStep
     }
     
-    private func playSound() {
-        userHeardButton.enabled = true
+    fileprivate func playSound() {
+        userHeardButton.isEnabled = true
         
         self.currentFrequencyLabel.text = "Frequência: \(currentToneTestStep!.frequency)"
         self.currentAmplitudeLabel.text = "Amplitude: \(currentToneTestStep!.amplitude)"
@@ -150,41 +150,41 @@ class ToneTestViewController: UIViewController {
         soundPlayingImageView.image = UIImage(named: "playing")
     }
     
-    private func stopSound() {
-        userHeardButton.enabled = false
+    fileprivate func stopSound() {
+        userHeardButton.isEnabled = false
         
         tone.stop()
         engine.mainMixerNode.volume = 0.0
         soundPlayingImageView.image = UIImage(named: "mute")
     }
     
-    private func endTest() {
+    fileprivate func endTest() {
         timer.invalidate()
         stopSound()
         
-        performSegueWithIdentifier(Segue.ShowResult.rawValue, sender: nil)
+        performSegue(withIdentifier: Segue.ShowResult.rawValue, sender: nil)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.ShowResult.rawValue {
-            if let vc = segue.destinationViewController as? ResultViewController {
+            if let vc = segue.destination as? ResultViewController {
                 vc.results = heardTones
             }
         }
     }
     
-    private func createTimerWithTimerInterval(interval: NSTimeInterval) {
+    fileprivate func createTimerWithTimerInterval(_ interval: TimeInterval) {
         timer.invalidate()
-        timer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector: #selector(timedOut), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(timedOut), userInfo: nil, repeats: true)
     }
     
-    @objc private func timedOut(){
+    @objc fileprivate func timedOut(){
         timer.invalidate()
         currentToneTestStep = currentToneTestStep!.notHeardTest
     }
     
     // MARK: IBActions
-    @IBAction func userHeardButtonTapped(sender: UIButton) {
+    @IBAction func userHeardButtonTapped(_ sender: UIButton) {
         timer.invalidate()
         let key = currentToneTestStep!.frequency
         let el = currentToneTestStep!.amplitude
@@ -192,18 +192,18 @@ class ToneTestViewController: UIViewController {
         currentToneTestStep = currentToneTestStep!.heardTest
     }
     
-    @IBAction func startProcedure(button: UIButton) {
+    @IBAction func startProcedure(_ button: UIButton) {
         startTest()
     }
     
     
 }
 
-public extension SequenceType {
+public extension Sequence {
     
     /// Categorises elements of self into a dictionary, with the keys given by keyFunc
-    func categorise<U : Hashable>(@noescape keyFunc: Generator.Element -> U) -> [U:[Generator.Element]] {
-        var dict: [U:[Generator.Element]] = [:]
+    func categorise<U : Hashable>(_ keyFunc: (Iterator.Element) -> U) -> [U:[Iterator.Element]] {
+        var dict: [U:[Iterator.Element]] = [:]
         for el in self {
             let key = keyFunc(el)
             if case nil = dict[key]?.append(el) { dict[key] = [el] }

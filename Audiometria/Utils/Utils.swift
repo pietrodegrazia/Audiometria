@@ -8,63 +8,67 @@
 
 import Foundation
 
-func map(x:NSNumber, inMin:NSNumber, inMax:NSNumber, outMin:NSNumber = 0, outMax:NSNumber = 1) -> NSNumber {
-    return (x.floatValue - inMin.floatValue) * (outMax.floatValue - outMin.floatValue) / (inMax.floatValue - inMin.floatValue) + outMin.floatValue
+func map(_ x: NSNumber, inMin: NSNumber, inMax: NSNumber, outMin: NSNumber = 0, outMax:NSNumber = 1) -> NSNumber {
+//    let a = (x - inMin)
+//    let b = (outMax - outMin)
+//    let c = (inMax - inMin)
+//    return a * b / c + outMin
+    return 1
 }
 
-func hvprint(items:Any..., function:String = #function) {
+func hvprint(_ items: Any..., function: String = #function) {
     print("\(function): \(items)")
 }
 
-func ^(lhs:Double, rhs:TimeMeasure) -> Double {
+func ^(lhs: Double, rhs: TimeMeasure) -> Double {
     return pow(lhs, Double(rhs.rawValue))
 }
 
-enum TimeMeasure:Int {
-    case Nanosecond = 0, Microsecond = 1, Millisecond = 2, Second = 3
+enum TimeMeasure: Int {
+    case nanosecond = 0, microsecond = 1, millisecond = 2, second = 3
 }
 
-func delay(delay: Double, measure:TimeMeasure = .Second, queue:dispatch_queue_t = Queue.Main.queue, closure:()->()) {
+func delay(_ delay: Double, measure: TimeMeasure = .second, queue: DispatchQueue = Queue.main.queue, closure:@escaping ()->()) {
     let timeInNs = delay * (1000^measure)
-    let time = dispatch_time(DISPATCH_TIME_NOW, Int64(timeInNs))
+    let time = DispatchTime.now() + Double(Int64(timeInNs)) / Double(NSEC_PER_SEC)
     
-    dispatch_after(time, queue, closure)
+    queue.asyncAfter(deadline: time, execute: closure)
 }
 
 protocol ExecutableQueue {
-    var queue: dispatch_queue_t { get }
+    var queue: DispatchQueue { get }
 }
 
 extension ExecutableQueue {
-    func execute(block: dispatch_block_t) {
-        dispatch_async(queue, block)
+    func execute(_ block: @escaping ()->()) {
+        queue.async(execute: block)
     }
 }
 
 enum Queue: ExecutableQueue {
     
-    case Main
-    case UserInteractive
-    case UserInitiated
-    case Utility
-    case Background
+    case main
+    case userInteractive
+    case userInitiated
+    case utility
+    case background
     
-    var queue: dispatch_queue_t {
+    var queue: DispatchQueue {
         switch self {
-        case .Main:
-            return dispatch_get_main_queue()
+        case .main:
+            return DispatchQueue.main
             
-        case .UserInteractive:
-            return dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)
+        case .userInteractive:
+            return DispatchQueue.global(qos: DispatchQoS.QoSClass.userInteractive)
             
-        case .UserInitiated:
-            return dispatch_get_global_queue(QOS_CLASS_USER_INITIATED, 0)
+        case .userInitiated:
+            return DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated)
             
-        case .Utility:
-            return dispatch_get_global_queue(QOS_CLASS_UTILITY, 0)
+        case .utility:
+            return DispatchQueue.global(qos: DispatchQoS.QoSClass.utility)
             
-        case .Background:
-            return dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
+        case .background:
+            return DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
         }
     }
     

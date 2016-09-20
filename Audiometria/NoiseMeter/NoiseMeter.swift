@@ -12,16 +12,16 @@ import UIKit
 class NoiseMeter {
     
     // MARK: Private vars
-    private var currentPower: [Int:Float] = [:]
-    private var peakPower: [Int:Float] = [:]
-    private var measureTimer: NSTimer?
-    private var recorder: AVAudioRecorder!
-    private var channels = [Int]()
+    fileprivate var currentPower: [Int:Float] = [:]
+    fileprivate var peakPower: [Int:Float] = [:]
+    fileprivate var measureTimer: Timer?
+    fileprivate var recorder: AVAudioRecorder!
+    fileprivate var channels = [Int]()
     
     // MARK: Public vars
     var isMeasuring:Bool {
         get {
-            return recorder.recording
+            return recorder.isRecording
         }
     }
     weak var delegate: NoiseMeterDelegate?
@@ -37,13 +37,13 @@ class NoiseMeter {
     }
     
     // MARK: Public methods
-    @objc func startMeasureWithInterval(measureInterval: NSTimeInterval){
-        guard self.recorder.record() else {
-            self.delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.ErrorToRecord)
+    @objc func startMeasureWithInterval(_ measureInterval: TimeInterval){
+        guard recorder.record() else {
+            delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.errorToRecord)
             return
         }
         
-        measureTimer = NSTimer.scheduledTimerWithTimeInterval(measureInterval, target: self, selector: #selector(measurePower), userInfo: nil, repeats: true)
+        measureTimer = Timer.scheduledTimer(timeInterval: measureInterval, target: self, selector: #selector(measurePower), userInfo: nil, repeats: true)
     }
     
     @objc func stopMeasure() {
@@ -52,35 +52,35 @@ class NoiseMeter {
             measureTimer?.invalidate()
             try AVAudioSession.sharedInstance().setActive(false)
         } catch let error {
-            delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.ErrorDeactivatingSession(error))
+            delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.errorDeactivatingSession(error))
         }
     }
     
     // MARK: Private methods
-    private func signForNotications() {
+    fileprivate func signForNotications() {
 //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(startMeasureWithInterval), name: AVAudioEngineConfigurationChangeNotification, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(startMeasureWithInterval), name:UIApplicationWillResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(startMeasureWithInterval), name:NSNotification.Name.UIApplicationWillResignActive, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(stopMeasure), name: UIApplicationWillEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(stopMeasure), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(routeChange), name:AVAudioSessionRouteChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(routeChange), name:NSNotification.Name.AVAudioSessionRouteChange, object: nil)
     }
     
-    private func pauseMeasure() {
+    fileprivate func pauseMeasure() {
         do {
             recorder.pause()
             measureTimer?.invalidate()
             try AVAudioSession.sharedInstance().setActive(false)
         } catch let error {
-            delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.ErrorDeactivatingSession(error))
+            delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.errorDeactivatingSession(error))
         }
     }
     
-    private func recordWithPermission(setup: Bool) {
+    fileprivate func recordWithPermission(_ setup: Bool) {
         AVAudioSession.sharedInstance().requestRecordPermission { (granted: Bool) -> Void in
             guard granted else {
-                self.delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.PermissionDenied)
+                self.delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.permissionDenied)
                 return
             }
             
@@ -91,7 +91,7 @@ class NoiseMeter {
         }
     }
     
-    private func setSessionPlayAndRecord() {
+    fileprivate func setSessionPlayAndRecord() {
         do {
             let session = AVAudioSession.sharedInstance()
             try session.setCategory(AVAudioSessionCategoryRecord)
@@ -102,36 +102,36 @@ class NoiseMeter {
         
     }
     
-    private func setupRecorder() {
+    fileprivate func setupRecorder() {
         do {
-            let currentFileName = "recording-\(NSDate().toStringWithFormat("yyyyMMdd-HH-mm-ss")).m4a"
-            let soundFilePath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] + "/" + currentFileName
-            let soundFileURL = NSURL(fileURLWithPath: soundFilePath)
+            let currentFileName = "recording-\(Date().toStringWithFormat("yyyyMMdd-HH-mm-ss")).m4a"
+            let soundFilePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/" + currentFileName
+            let soundFileURL = URL(fileURLWithPath: soundFilePath)
             let recordSettings: [String:AnyObject] = [
-                AVFormatIDKey: Int(kAudioFormatAppleLossless),
-                AVEncoderAudioQualityKey : AVAudioQuality.Max.rawValue,
-                AVEncoderBitRateKey : 320000,
-                AVNumberOfChannelsKey: 2,
-                AVSampleRateKey : 44100.0
+                AVFormatIDKey: Int(kAudioFormatAppleLossless) as AnyObject,
+                AVEncoderAudioQualityKey : AVAudioQuality.max.rawValue as AnyObject,
+                AVEncoderBitRateKey : 320000 as AnyObject,
+                AVNumberOfChannelsKey: 2 as AnyObject,
+                AVSampleRateKey : 44100.0 as AnyObject
             ]
             
-            recorder = try AVAudioRecorder(URL: soundFileURL, settings: recordSettings)
-            recorder.meteringEnabled = true
+            recorder = try AVAudioRecorder(url: soundFileURL, settings: recordSettings)
+            recorder.isMeteringEnabled = true
             
             if !recorder.prepareToRecord() {
-                delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.ErrorPreparingToRecord)
+                delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.errorPreparingToRecord)
             }
         } catch let error as NSError {
-            delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.ErrorCreatingRecorder(error))
+            delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.errorCreatingRecorder(error))
         }
     }
     
-    @objc private func measurePower() {
-        if recorder.recording {
+    @objc fileprivate func measurePower() {
+        if recorder.isRecording {
             recorder.updateMeters()
             for channel in channels {
-                let apc0 = recorder.averagePowerForChannel(0)
-                let peak0 = recorder.peakPowerForChannel(0)
+                let apc0 = recorder.averagePower(forChannel: 0)
+                let peak0 = recorder.peakPower(forChannel: 0)
                 
                 peakPower[channel] = max(peakPower[channel] ?? FLT_MIN, peak0)
                 currentPower[channel] = decibelsForPower(apc0)
@@ -141,7 +141,7 @@ class NoiseMeter {
         }
     }
     
-    private func decibelsForPower(power: Float) -> Float {
+    fileprivate func decibelsForPower(_ power: Float) -> Float {
         return power
         
 //        let referenceLevel:Float = 5.0
@@ -155,58 +155,58 @@ class NoiseMeter {
 }
 
 // MARK: - NoiseMeterError
-enum NoiseMeterError: ErrorType {
-    case PermissionDenied
-    case ErrorPreparingToRecord
-    case ErrorToRecord
-    case ErrorCreatingRecorder(ErrorType)
-    case ErrorDeactivatingSession(ErrorType)
+enum NoiseMeterError: Error {
+    case permissionDenied
+    case errorPreparingToRecord
+    case errorToRecord
+    case errorCreatingRecorder(Error)
+    case errorDeactivatingSession(Error)
 }
 
 // MARK: - NoiseMeterDelegate
 protocol NoiseMeterDelegate:class {
     
-    func noiseMeter(noiseMeter:NoiseMeter, didMeasurePower power: Float, forChannel channel: Int)
-    func noiseMeter(noiseMeter:NoiseMeter, didOccurrError error: ErrorType)
+    func noiseMeter(_ noiseMeter:NoiseMeter, didMeasurePower power: Float, forChannel channel: Int)
+    func noiseMeter(_ noiseMeter:NoiseMeter, didOccurrError error: Error)
     
 }
 
 extension NoiseMeter {
     
-    @objc private func routeChange(notification: NSNotification) {
-        print("routeChange \(notification.userInfo)")
+    @objc fileprivate func routeChange(_ notification: Notification) {
+        print("routeChange \((notification as NSNotification).userInfo)")
         
-        if let userInfo = notification.userInfo {
+        if let userInfo = (notification as NSNotification).userInfo {
             //print("userInfo \(userInfo)")
             if let reason = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt {
                 //print("reason \(reason)")
                 switch AVAudioSessionRouteChangeReason(rawValue: reason)! {
-                case AVAudioSessionRouteChangeReason.NewDeviceAvailable:
+                case AVAudioSessionRouteChangeReason.newDeviceAvailable:
                     print("NewDeviceAvailable")
                     print("did you plug in headphones?")
                     checkHeadphones()
                     
-                case AVAudioSessionRouteChangeReason.OldDeviceUnavailable:
+                case AVAudioSessionRouteChangeReason.oldDeviceUnavailable:
                     print("OldDeviceUnavailable")
                     print("did you unplug headphones?")
                     checkHeadphones()
                     
-                case AVAudioSessionRouteChangeReason.CategoryChange:
+                case AVAudioSessionRouteChangeReason.categoryChange:
                     print("CategoryChange")
                     
-                case AVAudioSessionRouteChangeReason.Override:
+                case AVAudioSessionRouteChangeReason.override:
                     print("Override")
                     
-                case AVAudioSessionRouteChangeReason.WakeFromSleep:
+                case AVAudioSessionRouteChangeReason.wakeFromSleep:
                     print("WakeFromSleep")
                     
-                case AVAudioSessionRouteChangeReason.Unknown:
+                case AVAudioSessionRouteChangeReason.unknown:
                     print("Unknown")
                     
-                case AVAudioSessionRouteChangeReason.NoSuitableRouteForCategory:
+                case AVAudioSessionRouteChangeReason.noSuitableRouteForCategory:
                     print("NoSuitableRouteForCategory")
                     
-                case AVAudioSessionRouteChangeReason.RouteConfigurationChange:
+                case AVAudioSessionRouteChangeReason.routeConfigurationChange:
                     print("RouteConfigurationChange")
                     
                 }
@@ -214,7 +214,7 @@ extension NoiseMeter {
         }
     }
     
-    private func checkHeadphones() {
+    fileprivate func checkHeadphones() {
         // check NewDeviceAvailable and OldDeviceUnavailable for them being plugged in/unplugged
         let currentRoute = AVAudioSession.sharedInstance().currentRoute
         if currentRoute.outputs.count > 0 {

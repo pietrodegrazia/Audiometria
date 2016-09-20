@@ -14,28 +14,28 @@ import Foundation
 
 class MaterTableSwift {
     
-    private let inMinDecibels:Float = -80.0
-    private let inTableSize:size_t = 400
-    private let inRoot:Float = 2.0
+    fileprivate let inMinDecibels:Float = -80.0
+    fileprivate let inTableSize:size_t = 400
+    fileprivate let inRoot:Float = 2.0
     
-    private var mMinDecibels:Float = 0.0
-    private var mDecibelResolution:Float = 0.0
-    private var mScaleFactor:Float = 0.0
-    private var mTable = [Float]()
+    fileprivate var mMinDecibels:Float = 0.0
+    fileprivate var mDecibelResolution:Float = 0.0
+    fileprivate var mScaleFactor:Float = 0.0
+    fileprivate var mTable = [Float]()
     
     init () {
         setupWithMinDb(inMinDecibels, tableSize: inTableSize, root: inRoot)
     }
     
-    func initWithMinDb(minDb:Float) {
+    func initWithMinDb(_ minDb:Float) {
         setupWithMinDb(minDb, tableSize: inTableSize, root: inRoot)
     }
     
-    func initWithMinDb(minDb:Float, tableSize aTableSize:size_t, root aRoot:Float) {
+    func initWithMinDb(_ minDb:Float, tableSize aTableSize:size_t, root aRoot:Float) {
         setupWithMinDb(minDb, tableSize: aTableSize, root: aRoot)
     }
     
-    func setupWithMinDb(minDb:Float, tableSize inTableSize:size_t, root aRoot:Float) {
+    func setupWithMinDb(_ minDb:Float, tableSize inTableSize:size_t, root aRoot:Float) {
         mMinDecibels = minDb
         mDecibelResolution = mMinDecibels / Float(inTableSize - 1)
         mScaleFactor = 1.0 / mDecibelResolution
@@ -56,11 +56,11 @@ class MaterTableSwift {
         }
     }
     
-    func ampForDb(inDb:Float) -> Float {
+    func ampForDb(_ inDb:Float) -> Float {
         return pow(10.0, 0.05 * inDb)
     }
     
-    func valueAt(inDecibels:Float) -> Float{
+    func valueAt(_ inDecibels:Float) -> Float{
         if (inDecibels < mMinDecibels){
             return 0.0;
         }

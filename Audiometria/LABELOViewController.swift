@@ -18,24 +18,23 @@ class LABELOViewController: UITableViewController {
     @IBOutlet weak var emissionFrequencySlider: UISlider!
     
     @IBOutlet weak var captationAmplitudeLabelCh0: UILabel!
-    
     @IBOutlet weak var captationAmplitudeLabelCh1: UILabel!
     
     @IBOutlet weak var playBtn: UIButton!
     
-    private var tone = AVTonePlayerUnit()
-    private var engine = AVAudioEngine()
+    fileprivate var tone = AVTonePlayerUnit()
+    fileprivate var engine = AVAudioEngine()
     
-    private var isPlaying = false
+    fileprivate var isPlaying = false
     
-    private var noiseMeter = NoiseMeter(channels: [0, 1])
+    fileprivate var noiseMeter = NoiseMeter(channels: [0, 1])
     
-    private struct AmplitudeConfig {
+    fileprivate struct AmplitudeConfig {
         static let min = 0.0
         static let max = 1.0
     }
     
-    private struct FrequencyConfig {
+    fileprivate struct FrequencyConfig {
         static let min = 0.0
         static let max = 8000.0
     }
@@ -50,36 +49,37 @@ class LABELOViewController: UITableViewController {
         tableView.tableFooterView = UIView()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         slideAmplitude(emissionAmplitudeSlider)
         slideFrequency(emissionFrequencySlider)
     }
     
-    @IBAction func slideAmplitude(sender: UISlider) {
+    @IBAction func slideAmplitude(_ sender: UISlider) {
         //        let mappedValue = map(sender.value, inMin: 0, inMax: 1, outMin: AmplitudeConfig.min, outMax: AmplitudeConfig.max)
         let mappedValue = Double(sender.value)
         emissionAmplitudeTextField.text = "\(mappedValue)"
         tone.amplitude = mappedValue
     }
     
-    @IBAction func slideFrequency(sender: UISlider) {
-        let mappedValue = map(sender.value, inMin: 0, inMax: 1, outMin: FrequencyConfig.min, outMax: FrequencyConfig.max)
-        emissionFrequencyTextField.text = "\(mappedValue)"
-        tone.frequency = mappedValue.doubleValue
+    @IBAction func slideFrequency(_ sender: UISlider) {
+//        let mappedValue = map
+//        let mappedValue = map(x: NSNumber(sender.value), inMin: 0, inMax: 1, outMin: FrequencyConfig.min, outMax: FrequencyConfig.max)
+//        emissionFrequencyTextField.text = "\(mappedValue)"
+//        tone.frequency = mappedValue.doubleValue
     }
     
-    @IBAction func play(sender: AnyObject) {
-        if tone.playing {
+    @IBAction func play(_ sender: AnyObject) {
+        if tone.isPlaying {
             stopSound()
-            playBtn.setTitle("Play", forState: UIControlState.Normal)
+            playBtn.setTitle("Play", for: UIControlState())
         } else {
             playSound()
-            playBtn.setTitle("Stop", forState: UIControlState.Normal)
+            playBtn.setTitle("Stop", for: UIControlState())
         }
     }
     
-    private func playSound() {
+    fileprivate func playSound() {
         guard let amplitudeString = emissionAmplitudeTextField.text else {
             hvprint("Informe a amplitude")
             emissionAmplitudeTextField.becomeFirstResponder()
@@ -110,19 +110,18 @@ class LABELOViewController: UITableViewController {
         engine.mainMixerNode.volume = 1.0
     }
     
-    private func stopSound() {
+    fileprivate func stopSound() {
         tone.stop()
         engine.mainMixerNode.volume = 0.0
     }
     
-    
-    private func setupAudio() {
+    fileprivate func setupAudio() {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
             let format = AVAudioFormat(standardFormatWithSampleRate: tone.sampleRate, channels: 1)
             let mixer = engine.mainMixerNode
             
-            engine.attachNode(tone)
+            engine.attach(tone)
             engine.connect(tone, to: mixer, format: format)
             try engine.start()
         } catch let error {
@@ -130,19 +129,18 @@ class LABELOViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, shouldHighlightRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         return false
     }
     
 }
 
-
 extension LABELOViewController: NoiseMeterDelegate {
-    func noiseMeter(noiseMeter: NoiseMeter, didOccurrError error: ErrorType) {
+    func noiseMeter(_ noiseMeter: NoiseMeter, didOccurrError error: Error) {
         hvprint(error)
     }
     
-    func noiseMeter(noiseMeter: NoiseMeter, didMeasurePower power: Float, forChannel channel: Int) {
+    func noiseMeter(_ noiseMeter: NoiseMeter, didMeasurePower power: Float, forChannel channel: Int) {
         switch channel {
         case 0:
             captationAmplitudeLabelCh0.text = "\(power)"
