@@ -15,6 +15,23 @@ enum Segue: String {
     
 }
 
+struct Contants {
+    let a = ["a":"b", "c":"d"]
+    
+    static let iPod_touch_40dbDict = [1000 : 0.008,
+                                 2000 : 0.019,
+                                 4000 : 0.035,
+                                 8000 : 0.0028,
+                                 500 : 1]
+    
+    
+    static let iPod_touch_60dbDict = [1000 : 0.1,
+                               2000 : 0.02,
+                               4000 : 0.023,
+                               8000 : 0.025,
+                               500 : -1]
+}
+
 class ToneTestStep {
     
     var frequency: Double
