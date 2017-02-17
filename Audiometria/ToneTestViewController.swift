@@ -15,21 +15,18 @@ enum Segue: String {
     
 }
 
+typealias FrequencyAmplitude = (frequency: Double, amplitude20: Double, amplitude40: Double, amplitude60: Double)
+
 struct Contants {
     let a = ["a":"b", "c":"d"]
     
-    static let iPod_touch_40dbDict = [1000 : 0.008,
-                                 2000 : 0.019,
-                                 4000 : 0.035,
-                                 8000 : 0.0028,
-                                 500 : 1]
     
     
-    static let iPod_touch_60dbDict = [1000 : 0.1,
-                               2000 : 0.02,
-                               4000 : 0.023,
-                               8000 : 0.025,
-                               500 : -1]
+    static let iPod_touch: [FrequencyAmplitude] = [(1000, -1,  0.008, 0.1),
+                                                  (2000, -1,  0.019, 0.02),
+                                                  (4000, -1,  0.035, 0.023),
+                                                  (8000, -1,  0.0028, 0.025),
+                                                  (500,  -1,       1, -1)]
 }
 
 class ToneTestStep {
@@ -64,7 +61,7 @@ class ToneTestViewController: UIViewController {
     @IBOutlet weak var userHeardButton: UIButton!
     
     // MARK: Private constants
-    fileprivate let frequencies = [1000.0, 2000.0, 4000.0, 8000.0, 500.0]
+    fileprivate let frequencies: [FrequencyAmplitude] = Contants.iPod_touch
     fileprivate let intervalBetweenAmplitudes: TimeInterval = 2.0
     fileprivate let intervalBetweenFrequencies: TimeInterval = 1.0
     fileprivate let toneDuration: TimeInterval = 1.0
@@ -116,9 +113,9 @@ class ToneTestViewController: UIViewController {
     fileprivate func generateTree() {
         var lastToneTestStep:ToneTestStep?
         for (index, freq) in frequencies.enumerated() {
-            let heardStep = ToneTestStep(frequency: freq, amplitude: 20.0, heardTest: nil, notHeardTest: nil)
-            let notHeardStep = ToneTestStep(frequency: freq, amplitude: 60.0, heardTest: nil, notHeardTest: nil)
-            let step = ToneTestStep(frequency: freq, amplitude: 40.0, heardTest: heardStep, notHeardTest: notHeardStep)
+            let heardStep = ToneTestStep(frequency: freq.frequency, amplitude: freq.amplitude20, heardTest: nil, notHeardTest: nil)
+            let notHeardStep = ToneTestStep(frequency: freq.frequency, amplitude: freq.amplitude60, heardTest: nil, notHeardTest: nil)
+            let step = ToneTestStep(frequency: freq.frequency, amplitude: freq.amplitude40, heardTest: heardStep, notHeardTest: notHeardStep)
             
             if index == 0 {
                 firstToneTestStep = step
