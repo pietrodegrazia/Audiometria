@@ -22,19 +22,11 @@ struct TestResult {
     var results: [FrequencyResult]
 }
 
-class ResultViewController: UIViewController {
+class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var result:TestResult
-    
-    struct Objects {
-        
-        var sectionName : Double!
-        var sectionObjects : [Double]!
-    }
-    
-    fileprivate var objectArray = [Objects]()
+    var result: TestResult!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,46 +34,37 @@ class ResultViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        for (key, value) in results {
-            print("\(key) -> \(value)")
-            objectArray.append(Objects(sectionName: key, sectionObjects: value))
-        }
-        
         tableView.reloadData()
     }
     
-}
-
-// MARK: - UITableViewDataSource
-extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    
+    // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        return objectArray.count
+        return result.results.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return objectArray[section].sectionObjects.count
+        return result.results[section].amplitudeResults.count
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        let sectionIndex = indexPath.section
-        let rowIndex = indexPath.row
         
-        cell.textLabel?.text = "Ouviu em: \(objectArray[sectionIndex].sectionObjects[rowIndex])"
-        cell.backgroundColor = .green
+        let amplitudeResult = result.results[indexPath.section].amplitudeResults[indexPath.row]
+        if amplitudeResult.heard {
+            cell.textLabel?.text = "Ouviu em: \(amplitudeResult.amplitude)"
+            cell.backgroundColor = .green
+        } else {
+            cell.textLabel?.text = "Não ouviu em: \(amplitudeResult.amplitude)"
+            cell.backgroundColor = .red
+        }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if let sectionName = objectArray[section].sectionName {
-            return ("Frequencia: \(sectionName) Hz")
-        } else{
-            return "unknown"
-        }
+        let frequency = result.results[section].frequency
+        return ("Frequencia: \(frequency) Hz")
     }
-    
+
 }
+
