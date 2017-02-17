@@ -8,12 +8,12 @@
 
 import Foundation
 
-func map(_ x: NSNumber, inMin: NSNumber, inMax: NSNumber, outMin: NSNumber = 0, outMax:NSNumber = 1) -> NSNumber {
-//    let a = (x - inMin)
-//    let b = (outMax - outMin)
-//    let c = (inMax - inMin)
-//    return a * b / c + outMin
-    return 1
+func map(x: NSNumber, inMin: NSNumber, inMax: NSNumber, outMin: NSNumber = 0, outMax:NSNumber = 1) -> NSNumber {
+    let a = (x.floatValue - inMin.floatValue)
+    let b = (outMax.floatValue - outMin.floatValue)
+    let c = (inMax.floatValue - inMin.floatValue)
+    return NSNumber(value: a * b / c + outMin.floatValue)
+//    return 1
 }
 
 func hvprint(_ items: Any..., function: String = #function) {

@@ -8,11 +8,25 @@
 
 import UIKit
 
+struct AmplitudeResult {
+    var amplitude: Double
+    var heard: Bool
+}
+
+struct FrequencyResult {
+    var frequency: Double
+    var amplitudeResults: [AmplitudeResult]
+}
+
+struct TestResult {
+    var results: [FrequencyResult]
+}
+
 class ResultViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-    var results:[Double:[Double]]!
+    var result:TestResult
     
     struct Objects {
         

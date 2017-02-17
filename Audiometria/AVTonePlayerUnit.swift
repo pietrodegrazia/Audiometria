@@ -1,9 +1,9 @@
 //
-//  AVTonePlayerUnit.swift
-//  ToneGenerator
+//  NoiseMeter.swift
+//  Audiometria
 //
-//  Created by OOPer in cooperation with shlab.jp, on 2015/3/22.
-//  See LICENSE.txt .
+//  Created by Henrique Valcanaia on 5/10/16.
+//  Copyright © 2016 darkshine. All rights reserved.
 //
 
 import Foundation
