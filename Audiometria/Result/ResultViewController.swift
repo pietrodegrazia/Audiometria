@@ -67,14 +67,21 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let sectionIndex = indexPath.section
+        let rowIndex = indexPath.row
         
-        cell.textLabel?.text = "\(objectArray[(indexPath as NSIndexPath).section].sectionObjects[(indexPath as NSIndexPath).row])"
+        cell.textLabel?.text = "Ouviu em: \(objectArray[sectionIndex].sectionObjects[rowIndex])"
+        cell.backgroundColor = .green
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "\(objectArray[section].sectionName)"
+        if let sectionName = objectArray[section].sectionName {
+            return ("Frequencia: \(sectionName) Hz")
+        } else{
+            return "unknown"
+        }
     }
     
 }
