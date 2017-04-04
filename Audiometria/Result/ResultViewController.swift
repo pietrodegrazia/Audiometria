@@ -8,7 +8,21 @@
 
 import UIKit
 
-class ResultViewController: UIViewController {
+struct AmplitudeResult {
+    var amplitude: Double
+    var heard: Bool
+}
+
+struct FrequencyResult {
+    var frequency: Double
+    var amplitudeResults: [AmplitudeResult]
+}
+
+struct TestResult {
+    var results: [FrequencyResult]
+}
+
+class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     typealias summary = (frequency: Double, listened: Bool)
@@ -86,13 +100,12 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return objectArray.count
+        return result.results.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return objectArray[section].sectionObjects.count
+        return result.results[section].amplitudeResults.count
     }
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath)
@@ -126,11 +139,9 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if let sectionName = objectArray[section].sectionName {
-            return ("Frequencia: \(sectionName) Hz")
-        } else{
-            return "unknown"
-        }
+        let frequency = result.results[section].frequency
+        return ("Frequencia: \(frequency) Hz")
     }
-    
+
 }
+
