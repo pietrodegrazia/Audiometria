@@ -10,11 +10,14 @@ import AVFoundation
 import UIKit
 
 enum Segue: String {
-    
     case ShowResult
-    
 }
 
+enum ResultEnum: Int {
+    case notHeard, heared, notTested, outOfRange
+}
+
+typealias ResultTuple = (amplitude: Double, result: ResultEnum)
 typealias FrequencyAmplitude = (frequency: Double, amplitude20: Double, amplitude40: Double, amplitude60: Double)
 
 struct Contants {
@@ -64,12 +67,12 @@ class ToneTestViewController: UIViewController {
     fileprivate let frequencies: [FrequencyAmplitude] = Contants.iPod_touch
     fileprivate let intervalBetweenAmplitudes: TimeInterval = 2.0
     fileprivate let intervalBetweenFrequencies: TimeInterval = 1.0
-    fileprivate let toneDuration: TimeInterval = 1.0
+    fileprivate let toneDuration: TimeInterval = 7.0
     
     // MARK: Private vars
     fileprivate var currentToneTestStep: ToneTestStep? {
         willSet(newValue) {
-            print(newValue?.description)
+            navigationItem.backBarButtonItem?.isEnabled = false
             stopSound()
             if newValue == nil {
                 endTest()
@@ -97,7 +100,9 @@ class ToneTestViewController: UIViewController {
     
     fileprivate var engine = AVAudioEngine()
     fileprivate var firstToneTestStep:ToneTestStep?
-    fileprivate var heardTones = [Double:[Double]]()
+    // The key is the frequency, the value is the array of ResultTuples.
+    
+    fileprivate var allTones = [Double:[ResultTuple]]()
     fileprivate var testStarted = false
     fileprivate var timer = Timer()
     fileprivate var tone = AVTonePlayerUnit()
@@ -107,10 +112,12 @@ class ToneTestViewController: UIViewController {
         super.viewDidLoad()
         setupAudio()
         generateTree()
+        populateAllTonesDictionary()
     }
     
     // MARK: Private helpers
     fileprivate func generateTree() {
+        //Remove -1 frequencies from tree
         var lastToneTestStep:ToneTestStep?
         for (index, freq) in frequencies.enumerated() {
             let heardStep = ToneTestStep(frequency: freq.frequency, amplitude: freq.amplitude20, heardTest: nil, notHeardTest: nil)
@@ -127,6 +134,17 @@ class ToneTestViewController: UIViewController {
             }
             
             lastToneTestStep = step
+        }
+    }
+    
+    func populateAllTonesDictionary() {
+        for freq in frequencies {
+            
+            let resultTupleArray = [ResultTuple(freq.amplitude20, freq.amplitude20 == -1.0 ? .outOfRange : .notTested),
+                                    ResultTuple(freq.amplitude40, freq.amplitude40 == -1.0 ? .outOfRange : .notTested),
+                                    ResultTuple(freq.amplitude60, freq.amplitude60 == -1.0 ? .outOfRange : .notTested)]
+            
+            allTones[freq.frequency] = resultTupleArray
         }
     }
     
@@ -182,7 +200,7 @@ class ToneTestViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == Segue.ShowResult.rawValue {
             if let vc = segue.destination as? ResultViewController {
-                vc.results = heardTones
+                vc.results = allTones
             }
         }
     }
@@ -195,6 +213,10 @@ class ToneTestViewController: UIViewController {
     @objc fileprivate func timedOut(){
         timer.invalidate()
         currentToneTestStep = currentToneTestStep!.notHeardTest
+        let key = currentToneTestStep!.frequency
+        let el = currentToneTestStep!.amplitude
+        let result = ResultTuple(el, .notHeard)
+        allTones[key]?.append(result)
     }
     
     // MARK: IBActions
@@ -202,15 +224,14 @@ class ToneTestViewController: UIViewController {
         timer.invalidate()
         let key = currentToneTestStep!.frequency
         let el = currentToneTestStep!.amplitude
-        if case nil = heardTones[key]?.append(el) { heardTones[key] = [el] }
+        let result = ResultTuple(el, .heared)
+        allTones[key]?.append(result)
         currentToneTestStep = currentToneTestStep!.heardTest
     }
     
     @IBAction func startProcedure(_ button: UIButton) {
         startTest()
     }
-    
-    
 }
 
 public extension Sequence {
