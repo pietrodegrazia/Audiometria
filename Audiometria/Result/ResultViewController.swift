@@ -22,12 +22,12 @@ struct TestResult {
     var results: [FrequencyResult]
 }
 
-class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ResultViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     typealias summary = (frequency: Double, listened: Bool)
     
-    var results:[Double:[ResultTuple]]!
+    var results: [Double:[ResultTuple]]!
     var patient: Patient?
     
     struct Objects {
@@ -100,11 +100,11 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return result.results.count
+        return objectArray.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return result.results[section].amplitudeResults.count
+        return objectArray[section].sectionObjects?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -139,7 +139,7 @@ extension ResultViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let frequency = result.results[section].frequency
+        let frequency = objectArray[section].sectionName
         return ("Frequencia: \(frequency) Hz")
     }
 
