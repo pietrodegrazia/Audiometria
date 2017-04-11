@@ -12,8 +12,8 @@ import UIKit
 class NoiseMeter {
     
     // MARK: Private vars
-    fileprivate var currentPower: [Int:Float] = [:]
-    fileprivate var peakPower: [Int:Float] = [:]
+    fileprivate var currentPower = [Int:Float]()
+    fileprivate var peakPower = [Int:Float]()
     fileprivate var measureTimer: Timer?
     fileprivate var recorder: AVAudioRecorder!
     fileprivate var channels = [Int]()
@@ -24,16 +24,16 @@ class NoiseMeter {
             return recorder.isRecording
         }
     }
+    
     weak var delegate: NoiseMeterDelegate?
     
-    init(channels:[Int]) {
+    init(channels: [Int]) {
         self.channels = channels
         recordWithPermission(true)
-//        signForNotications()
     }
     
     deinit {
-//        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: Public methods
@@ -58,13 +58,9 @@ class NoiseMeter {
     
     // MARK: Private methods
     fileprivate func signForNotications() {
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(startMeasureWithInterval), name: AVAudioEngineConfigurationChangeNotification, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(startMeasureWithInterval), name:NSNotification.Name.UIApplicationWillResignActive, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(startMeasureWithInterval), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(stopMeasure), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(routeChange), name:NSNotification.Name.AVAudioSessionRouteChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(routeChange), name: NSNotification.Name.AVAudioSessionRouteChange, object: nil)
     }
     
     fileprivate func pauseMeasure() {
@@ -133,23 +129,12 @@ class NoiseMeter {
                 let apc0 = recorder.averagePower(forChannel: 0)
                 let peak0 = recorder.peakPower(forChannel: 0)
                 
-                peakPower[channel] = max(peakPower[channel] ?? FLT_MIN, peak0)
-                currentPower[channel] = decibelsForPower(apc0)
+                peakPower[channel] = max(peakPower[channel] ?? Float.leastNormalMagnitude, peak0)
+                currentPower[channel] = apc0
                 
                 delegate?.noiseMeter(self, didMeasurePower: currentPower[channel]!, forChannel: channel)
             }
         }
-    }
-    
-    fileprivate func decibelsForPower(_ power: Float) -> Float {
-        return power
-        
-//        let referenceLevel:Float = 5.0
-//        let range:Float = 160.0
-//        let offset:Float = 0
-//        
-//        let spl = 20 * log10(referenceLevel * powf(10.0, (power/20)) * range) + offset
-//        return spl
     }
     
 }
@@ -172,40 +157,38 @@ protocol NoiseMeterDelegate: class {
 extension NoiseMeter {
     
     @objc fileprivate func routeChange(_ notification: Notification) {
-        print("routeChange \((notification as NSNotification).userInfo)")
-        
-        if let userInfo = (notification as NSNotification).userInfo {
-            //print("userInfo \(userInfo)")
+        if let userInfo = notification.userInfo {
+            debugPrint("userInfo \(userInfo)")
             if let reason = userInfo[AVAudioSessionRouteChangeReasonKey] as? UInt {
-                //print("reason \(reason)")
+                debugPrint("reason \(reason)")
                 switch AVAudioSessionRouteChangeReason(rawValue: reason)! {
-                case AVAudioSessionRouteChangeReason.newDeviceAvailable:
-                    print("NewDeviceAvailable")
-                    print("did you plug in headphones?")
+                case .newDeviceAvailable:
+                    debugPrint("NewDeviceAvailable")
+                    debugPrint("did you plug in headphones?")
                     checkHeadphones()
                     
-                case AVAudioSessionRouteChangeReason.oldDeviceUnavailable:
-                    print("OldDeviceUnavailable")
-                    print("did you unplug headphones?")
+                case .oldDeviceUnavailable:
+                    debugPrint("OldDeviceUnavailable")
+                    debugPrint("did you unplug headphones?")
                     checkHeadphones()
                     
-                case AVAudioSessionRouteChangeReason.categoryChange:
-                    print("CategoryChange")
+                case .categoryChange:
+                    debugPrint("CategoryChange")
                     
-                case AVAudioSessionRouteChangeReason.override:
-                    print("Override")
+                case .override:
+                    debugPrint("Override")
                     
-                case AVAudioSessionRouteChangeReason.wakeFromSleep:
-                    print("WakeFromSleep")
+                case .wakeFromSleep:
+                    debugPrint("WakeFromSleep")
                     
-                case AVAudioSessionRouteChangeReason.unknown:
-                    print("Unknown")
+                case .unknown:
+                    debugPrint("Unknown")
                     
-                case AVAudioSessionRouteChangeReason.noSuitableRouteForCategory:
-                    print("NoSuitableRouteForCategory")
+                case .noSuitableRouteForCategory:
+                    debugPrint("NoSuitableRouteForCategory")
                     
-                case AVAudioSessionRouteChangeReason.routeConfigurationChange:
-                    print("RouteConfigurationChange")
+                case .routeConfigurationChange:
+                    debugPrint("RouteConfigurationChange")
                     
                 }
             }
@@ -218,14 +201,14 @@ extension NoiseMeter {
         if currentRoute.outputs.count > 0 {
             for description in currentRoute.outputs {
                 if description.portType == AVAudioSessionPortHeadphones {
-                    print("headphones are plugged in")
+                    debugPrint("headphones are plugged in")
                     break
                 } else {
-                    print("headphones are unplugged")
+                    debugPrint("headphones are unplugged")
                 }
             }
         } else {
-            print("checking headphones requires a connection to a device")
+            debugPrint("checking headphones requires a connection to a device")
         }
     }
     

@@ -11,12 +11,12 @@ import Foundation
 typealias FrequencyAmplitude = (frequency: Double, amplitude20: Double, amplitude40: Double, amplitude60: Double)
 typealias AmplitudeConversionTable = [(frequency: Double, amplitudeIn: Double, amplitudeOut: Double)]
 
-struct Contants {
+public struct Contants {
     static let iPod_touch: [FrequencyAmplitude] = [(1000, -1,  0.008, 0.1),
                                                    (2000, -1,  0.019, 0.02),
                                                    (4000, -1,  0.035, 0.023),
                                                    (8000, -1,  0.0028, 0.025),
-                                                   (500,  -1,       1, -1)]
+                                                   (500,  -1,       1, -2)]
     static let iPodTouchConversionTable = [
         (1000,    -1, 20),
         (1000, 0.008, 40),
@@ -36,8 +36,24 @@ struct Contants {
         
         (500, -1, 20),
         (500,  1, 40),
-        (500, -1, 60),
-    ]
+        (500, -2, 60),
+        ]
+}
+
+public func amplitude(fromTone tone: PlayerTone) -> Int {
+    let row = Contants.iPodTouchConversionTable.filter { (row: (Int, Double, Int)) -> Bool in
+        return tone.Frequency == Double(row.0) && tone.Amplitude == row.1
+    }
+    
+    return row.first!.2
+}
+
+func amplitude(fromStep step: ToneTestStep) -> Int {
+    let row = Contants.iPodTouchConversionTable.filter { (row: (Int, Double, Int)) -> Bool in
+        return step.frequency == Double(row.0) && step.amplitude == row.1
+    }
+    
+    return row.first!.2
 }
 
 class TestInteractor {
@@ -84,6 +100,23 @@ class TestInteractor {
         case .notTested:
             return currentStep.heardTest
         }
+    }
+    
+    func printTree() {
+        #if DEBUG
+            debugPrint("---- Printando a arvore ----")
+            var aux = stepsTree
+            while(aux != nil) {
+                print("Frequencia: Optional(\(aux!.frequency))")
+                print("Current   : Optional(\(aux!.realAmplitude))")
+                print("Heard     : \(aux!.heardTest?.realAmplitude)")
+                print("Not Heard : \(aux!.notHeardTest?.realAmplitude)")
+                aux = aux!.heardTest
+                print("\n")
+            }
+            
+            debugPrint("---- Acabou ----")
+        #endif
     }
     
 }

@@ -46,13 +46,14 @@ class ToneTestViewController: UIViewController, PlayerInterface, TestInterface {
     }
     
     @objc private func timedOut() {
-        debugPrint("Timeout")
+        //        debugPrint("Timeout")
         stopSound()
         eventHandler.timeout()
     }
     
     // MARK: - IBActions
     @IBAction func didTapHeardButton(_ sender: UIButton) {
+        debugPrint("Ouviu")
         eventHandler.userHeard()
     }
     
@@ -62,9 +63,11 @@ class ToneTestViewController: UIViewController, PlayerInterface, TestInterface {
     
     // MARK: - PlayerInterface
     func didStopPlaying(tone: PlayerTone) {
-        debugPrint("Parando som (\(tone.Amplitude),\(tone.Frequency))")
-        self.userHeardButton.isEnabled = false
-        self.soundPlayingImageView.image = #imageLiteral(resourceName: "mute")
+        DispatchQueue.main.async {
+            debugPrint("Parando som (\(tone.Frequency), \(amplitude(fromTone: tone)), \(tone.Amplitude))")
+            self.userHeardButton.isEnabled = false
+            self.soundPlayingImageView.image = #imageLiteral(resourceName: "mute")
+        }
     }
     
     func didStartPlaying(tone: PlayerTone) {
@@ -107,7 +110,7 @@ class ToneTestViewController: UIViewController, PlayerInterface, TestInterface {
     }
     
     func play(step: ToneTestStep, withDuration duration: TimeInterval) {
-        debugPrint("Iniciando som (\(step.amplitude),\(step.frequency) com duration \(duration))")
+        debugPrint("Iniciando som (\(step.frequency), \(amplitude(fromStep: step)), \(step.amplitude) com duration \(duration))")
         player?.play(amplitude: step.amplitude, frequency: step.frequency)
         createTimer(withTimerInterval: duration)
     }

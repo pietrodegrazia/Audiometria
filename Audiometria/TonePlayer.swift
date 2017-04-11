@@ -15,11 +15,11 @@ protocol PlayerInterface: class {
     func didOccurErrorInitializing(error: Error)
 }
 
-typealias PlayerTone = (Frequency: Double, Amplitude: Double)
+public typealias PlayerTone = (Frequency: Double, Amplitude: Double)
 
 class TonePlayer {
     private var engine = AVAudioEngine()
-    private var firstToneTestStep:ToneTestStep?
+    private var firstToneTestStep: ToneTestStep?
     private var tone = AVTonePlayerUnit()
     
     weak var interface: PlayerInterface?
@@ -39,25 +39,25 @@ class TonePlayer {
     }
     
     func play(amplitude: Double, frequency: Double) {
-        tone.amplitude = amplitude
-        tone.frequency = frequency
-        
-        tone.preparePlaying()
-        tone.play()
-        engine.mainMixerNode.volume = 1.0
-        
-        let playerTone = PlayerTone(Amplitude: tone.amplitude, Frequency: tone.frequency)
         DispatchQueue.main.async {
+            self.tone.amplitude = amplitude
+            self.tone.frequency = frequency
+            
+            self.tone.preparePlaying()
+            self.tone.play()
+            self.engine.mainMixerNode.volume = 1.0
+            
+            let playerTone = PlayerTone(Amplitude: self.tone.amplitude, Frequency: self.tone.frequency)
             self.interface?.didStartPlaying(tone: playerTone)
         }
     }
     
     func stop() {
-        tone.stop()
-        engine.mainMixerNode.volume = 0.0
-        
-        let playerTone = PlayerTone(Amplitude: tone.amplitude, Frequency: tone.frequency)
         DispatchQueue.main.async {
+            self.tone.stop()
+            self.engine.mainMixerNode.volume = 0.0
+            
+            let playerTone = PlayerTone(Amplitude: self.tone.amplitude, Frequency: self.tone.frequency)
             self.interface?.didStopPlaying(tone: playerTone)
         }
     }

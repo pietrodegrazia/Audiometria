@@ -21,8 +21,8 @@ protocol TestInterface {
 class TestPresenter {
     
     private struct ToneDuration {
-        static let betweenAmplitude: TimeInterval = 2
-        static let betweenFrequency: TimeInterval = 1
+        static let betweenAmplitude: TimeInterval = 4
+        static let betweenFrequency: TimeInterval = 2
     }
     
     // MARK: - Public vars
@@ -53,6 +53,8 @@ class TestPresenter {
     
     // MARK: - Public methods
     func startTest() {
+        interactor.printTree()
+        
         interface?.didStartTest()
         results = nil
         nextStep()
@@ -83,7 +85,7 @@ class TestPresenter {
     
     private func nextStep(forResult result: StepResult = .notTested) {
         var step = interactor.step(currentStep, forResult: result)
-        while (step != nil && step!.amplitude == -1) {
+        while (step != nil && step!.amplitude < 0) {
             currentStep = step
             step = interactor.step(currentStep, forResult: .outOfRange)
         }
