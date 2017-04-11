@@ -30,15 +30,8 @@ class ToneTestStep {
     var notHeardTest: ToneTestStep?
     var heard = false
     var result: StepResult
-    var realAmplitude: Int {
-        let row = Contants.iPodTouchConversionTable.filter { (row: (Int, Double, Int)) -> Bool in
-            return self.frequency == Double(row.0) && self.amplitude == row.1
-        }
-        
-        return row.first!.2
-    }
     
-    init(frequency: Double, amplitude: Double, heardTest: ToneTestStep?, notHeardTest: ToneTestStep?, result: StepResult = .notTested) {
+    init(frequency: Double, amplitude: Double, heardTest: ToneTestStep? = nil, notHeardTest: ToneTestStep? = nil, result: StepResult = .notTested) {
         self.frequency = frequency
         self.amplitude = amplitude
         self.heardTest = heardTest
@@ -47,7 +40,7 @@ class ToneTestStep {
     }
     
     var debugDescription: String {
-        return "ToneTestStep { frequency: \(frequency), amplitude: \(self.amplitude), realAmplitude: \(realAmplitude) }"
+        return "ToneTestStep { frequency: \(frequency), amplitude: \(self.amplitude) }"
     }
     
 }

@@ -8,6 +8,34 @@
 
 import Foundation
 
+let iPodTouchAmplitudeAPITable:[Frequency:[AmplitudeReal:AmplitudeAPI]] = [
+    1000: [
+        20:-1,
+        40:0.008,
+        60:0.1,
+    ],
+    2000: [
+        20:-1,
+        40:0.019,
+        60:0.2,
+    ],
+    4000: [
+        20:-1,
+        40:0.035,
+        60:0.023,
+    ],
+    8000: [
+        20:-1,
+        40:0.028,
+        60:0.025,
+    ],
+    500: [
+        20:-1,
+        40:0.008,
+        60:-1,
+    ]
+]
+
 typealias ResultTuple = (amplitude: Double, result: StepResult)
 typealias Results = [Double:[ResultTuple]]
 
@@ -21,8 +49,8 @@ protocol TestInterface {
 class TestPresenter {
     
     private struct ToneDuration {
-        static let betweenAmplitude: TimeInterval = 4
-        static let betweenFrequency: TimeInterval = 2
+        static let betweenAmplitude: TimeInterval = 3
+        static let betweenFrequency: TimeInterval = 1.5
     }
     
     // MARK: - Public vars
@@ -30,6 +58,7 @@ class TestPresenter {
     
     // MARK: - Private vars
     private var results: Results?
+    private var currentResult: StepResult!
     
     private var currentStep: ToneTestStep? {
         willSet {
@@ -42,7 +71,7 @@ class TestPresenter {
                     results![step.frequency] = [ResultTuple]()
                 }
                 
-                let result = ResultTuple(step.amplitude, step.result)
+                let result = ResultTuple(step.amplitude, currentResult)
                 results![step.frequency]!.append(result)
             } else {
                 debugPrint("Vai trocar o step, currentStep é nil, está comecando o teste?")
@@ -53,7 +82,7 @@ class TestPresenter {
     
     // MARK: - Public methods
     func startTest() {
-        interactor.printTree()
+//        interactor.printTree()
         
         interface?.didStartTest()
         results = nil
@@ -84,10 +113,13 @@ class TestPresenter {
     }
     
     private func nextStep(forResult result: StepResult = .notTested) {
-        var step = interactor.step(currentStep, forResult: result)
+        currentResult = result
+        let heard = (result == .heard)
+        var step = interactor.step(currentStep, didHear: heard)
         while (step != nil && step!.amplitude < 0) {
+            currentResult = .outOfRange
             currentStep = step
-            step = interactor.step(currentStep, forResult: .outOfRange)
+            step = interactor.step(currentStep, didHear: heard)
         }
         
         if step == nil {
@@ -104,6 +136,7 @@ class TestPresenter {
                 }
             }
             
+            step!.amplitude = iPodTouchAmplitudeAPITable[step!.frequency]![Int(step!.amplitude)]!
             interface?.play(step: step!, withDuration: duration)
             currentStep = step
         }

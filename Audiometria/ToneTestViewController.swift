@@ -38,7 +38,7 @@ class ToneTestViewController: UIViewController, PlayerInterface, TestInterface {
     // MARK: - Private helpers
     private func createTimer(withTimerInterval interval: TimeInterval) {
         timer.invalidate()
-        timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(timedOut), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(timedOut), userInfo: nil, repeats: false)
     }
     
     private func stopSound() {
