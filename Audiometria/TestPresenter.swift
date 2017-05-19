@@ -17,7 +17,7 @@ let iPodTouchAmplitudeAPITable:[Frequency:[AmplitudeReal:AmplitudeAPI]] = [
     2000: [
         20:-1,
         40:0.019,
-        60:0.2,
+        60:0.02,
     ],
     4000: [
         20:-1,
@@ -25,13 +25,13 @@ let iPodTouchAmplitudeAPITable:[Frequency:[AmplitudeReal:AmplitudeAPI]] = [
         60:0.023,
     ],
     8000: [
-        20:-1,
-        40:0.028,
+        20:0.0002,
+        40:0.0028,
         60:0.025,
     ],
     500: [
         20:-1,
-        40:0.008,
+        40:1,
         60:-1,
     ]
 ]
@@ -49,8 +49,8 @@ protocol TestInterface {
 class TestPresenter {
     
     private struct ToneDuration {
-        static let betweenAmplitude: TimeInterval = 3
-        static let betweenFrequency: TimeInterval = 1.5
+        static let betweenAmplitude: TimeInterval = 1
+        static let betweenFrequency: TimeInterval = 0.5
     }
     
     // MARK: - Public vars
@@ -62,19 +62,29 @@ class TestPresenter {
     
     private var currentStep: ToneTestStep? {
         willSet {
-            if let step = currentStep {
-                if results == nil {
-                    results = Results()
+            // finalizando teste
+            if newValue != nil {
+                if let step = currentStep {
+                    if results == nil {
+                        results = Results()
+                    }
+                    
+                    if results![step.frequency] == nil {
+                        results![step.frequency] = [ResultTuple]()
+                    }
+                    
+                    let amplitudeReal = Constants.iPodTouchConversionTable
+                        .filter { $0.0 == Int(step.frequency) }
+                        .filter { abs($0.1 - step.amplitude) <= 1e-3 }
+                        .first!.2
+                    
+                    let result = ResultTuple(Double(amplitudeReal), currentResult)
+                    results![step.frequency]!.append(result)
+                } else {
+                    debugPrint("Vai trocar o step, currentStep é nil, está comecando o teste?")
                 }
-                
-                if results![step.frequency] == nil {
-                    results![step.frequency] = [ResultTuple]()
-                }
-                
-                let result = ResultTuple(step.amplitude, currentResult)
-                results![step.frequency]!.append(result)
             } else {
-                debugPrint("Vai trocar o step, currentStep é nil, está comecando o teste?")
+                debugPrint("Vai trocar o currentStep pra nil, está finalizando o teste?")
             }
         }
     }
@@ -82,8 +92,6 @@ class TestPresenter {
     
     // MARK: - Public methods
     func startTest() {
-//        interactor.printTree()
-        
         interface?.didStartTest()
         results = nil
         nextStep()
@@ -113,11 +121,15 @@ class TestPresenter {
     }
     
     private func nextStep(forResult result: StepResult = .notTested) {
-        currentResult = result
         let heard = (result == .heard)
         var step = interactor.step(currentStep, didHear: heard)
+        step?.amplitude = iPodTouchAmplitudeAPITable[step!.frequency]![Int(step!.amplitude)]!
+        
+        currentResult = result
+        currentStep = step
+        
         while (step != nil && step!.amplitude < 0) {
-            currentResult = .outOfRange
+            currentResult = (step!.amplitude < 0) ? .outOfRange : .heard
             currentStep = step
             step = interactor.step(currentStep, didHear: heard)
         }
@@ -126,7 +138,7 @@ class TestPresenter {
             finishTest()
         } else {
             var duration: TimeInterval = ToneDuration.betweenAmplitude
-            if currentStep != nil && currentStep?.amplitude != -1 {
+            if currentStep != nil && currentStep!.amplitude > 0 {
                 if currentStep?.amplitude != step!.amplitude {
                     duration = ToneDuration.betweenAmplitude
                 }
@@ -136,9 +148,7 @@ class TestPresenter {
                 }
             }
             
-            step!.amplitude = iPodTouchAmplitudeAPITable[step!.frequency]![Int(step!.amplitude)]!
             interface?.play(step: step!, withDuration: duration)
-            currentStep = step
         }
     }
 }

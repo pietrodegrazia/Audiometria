@@ -64,7 +64,7 @@ class ToneTestViewController: UIViewController, PlayerInterface, TestInterface {
     // MARK: - PlayerInterface
     func didStopPlaying(tone: PlayerTone) {
         DispatchQueue.main.async {
-            debugPrint("Parando som (\(tone.Frequency), \(amplitude(fromTone: tone)), \(tone.Amplitude))")
+//            debugPrint("Parando som (\(tone.Frequency), \(amplitude(fromTone: tone)), \(tone.Amplitude))")
             self.userHeardButton.isEnabled = false
             self.soundPlayingImageView.image = #imageLiteral(resourceName: "mute")
         }

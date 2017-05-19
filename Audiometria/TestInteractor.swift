@@ -11,12 +11,12 @@ import Foundation
 typealias FrequencyAmplitude = (frequency: Double, amplitude20: Double, amplitude40: Double, amplitude60: Double)
 typealias AmplitudeConversionTable = [(frequency: Double, amplitudeIn: Double, amplitudeOut: Double)]
 
-public struct Contants {
-    static let iPod_touch: [FrequencyAmplitude] = [(1000, -1,  0.008, 0.1),
-                                                   (2000, -1,  0.019, 0.02),
-                                                   (4000, -1,  0.035, 0.023),
-                                                   (8000, -1,  0.0028, 0.025),
-                                                   (500,  -1,       1, -2)]
+public struct Constants {
+    static let iPod_touch: [FrequencyAmplitude] = [(1000,     -1,  0.008, 0.1),
+                                                   (2000,     -1,  0.019, 0.02),
+                                                   (4000,     -1,  0.035, 0.023),
+                                                   (8000, 0.0002, 0.0028, 0.025),
+                                                   (500,      -1,      1, -2)]
     static let iPodTouchConversionTable = [
         (1000,    -1, 20),
         (1000, 0.008, 40),
@@ -30,7 +30,7 @@ public struct Contants {
         (4000, 0.035, 40),
         (4000, 0.023, 60),
         
-        (8000,     -1, 20),
+        (8000, 0.0002, 20),
         (8000, 0.0028, 40),
         (8000,  0.025, 60),
         
@@ -91,7 +91,7 @@ class TestInteractor {
         debugPrint("Criou arvore")
         var firstToneTestStep: ToneTestStep?
         var lastToneTestStep: ToneTestStep?
-        for (index, freq) in Contants.iPod_touch.enumerated() {
+        for (index, freq) in Constants.iPod_touch.enumerated() {
             let heardStep = ToneTestStep(frequency: freq.frequency, amplitude: freq.amplitude20, heardTest: nil, notHeardTest: nil)
             let notHeardStep = ToneTestStep(frequency: freq.frequency, amplitude: freq.amplitude60, heardTest: nil, notHeardTest: nil)
             let step = ToneTestStep(frequency: freq.frequency, amplitude: freq.amplitude40, heardTest: heardStep, notHeardTest: notHeardStep)
@@ -111,8 +111,8 @@ class TestInteractor {
         return firstToneTestStep
     }()
     
-    let initialAmplitude: AmplitudeReal = 40
-    let frequencyOrder: [Frequency] = [1000, 2000, 4000, 8000, 500]
+    private let initialAmplitude: AmplitudeReal = 40
+    private let frequencyOrder: [Frequency] = [1000, 2000, 4000, 8000, 500]
     
     func step(_ step: ToneTestStep?, didHear: Bool) -> ToneTestStep? {
         guard let currentStep = step else {
@@ -120,7 +120,14 @@ class TestInteractor {
             return tone
         }
         
-        if initialAmplitude == Int(currentStep.amplitude) {
+        //        let indexCurrentFrequency = frequencyOrder.index(of: currentStep.frequency)!
+        //        let amplitudeReal = Constants.iPodTouchConversionTable.filter({abs($0.1 - currentStep.amplitude) <= 1e-4}).first!.2
+        let amplitudeReal = Constants.iPodTouchConversionTable
+            .filter { $0.0 == Int(currentStep.frequency) }
+            .filter { abs($0.1 - currentStep.amplitude) <= 1e-3 }
+            .first!.2
+        
+        if initialAmplitude == amplitudeReal {
             let frequencyData = iPodTouchAmplitudeRealTable[currentStep.frequency]!
             let amplitudeReal = Double(frequencyData[didHear]!)
             return ToneTestStep(frequency: currentStep.frequency, amplitude: amplitudeReal)
@@ -134,48 +141,67 @@ class TestInteractor {
                 let nextFrequency = frequencyOrder[indexNextFrequency]
                 
                 let frequencyData = iPodTouchAmplitudeRealTable[nextFrequency]!
-                let amplitudeReal = Double(frequencyData[didHear]!)
+                //                let amplitudeReal = Double(frequencyData[didHear]!)
+                let amplitudeReal = Double(40) // sempre 40 pq aqui trocou frequencia
                 return ToneTestStep(frequency: nextFrequency, amplitude: amplitudeReal)
             }
         }
     }
     
-//    func step(_ step: ToneTestStep?, forResult result: StepResult) -> ToneTestStep? {
-//        guard let currentStep = step else {
-//            let tone = ToneTestStep(frequency: 1000, amplitude: 40)
-//            return tone
-//        }
-//        
-//        return nil
-//    }
+    //    func step(_ step: ToneTestStep?, forResult result: StepResult) -> ToneTestStep? {
+    //        guard let currentStep = step else {
+    //            let tone = ToneTestStep(frequency: 1000, amplitude: 40)
+    //            return tone
+    //        }
+    //
+    //        return nil
+    //    }
     
-//    func printTree() {
-//        //        #if DEBUG
-//        var aux = stepsTree
-//        
-//        debugPrint("---- Printando a arvore pelo HEARD ----")
-//        while(aux != nil) {
-//            print("Frequencia: Optional(\(aux!.frequency))")
-//            print("Current   : Optional(\(aux!.realAmplitude))")
-//            print("Heard     : \(aux!.heardTest?.realAmplitude)")
-//            print("Not Heard : \(aux!.notHeardTest?.realAmplitude)")
-//            aux = aux!.heardTest
-//            print("\n")
-//        }
-//        
-//        debugPrint("\n\n---- Printando a arvore pelo NOT HEARD ----")
-//        aux = stepsTree
-//        while(aux != nil) {
-//            print("Frequencia: Optional(\(aux!.frequency))")
-//            print("Current   : Optional(\(aux!.realAmplitude))")
-//            print("Heard     : \(aux!.heardTest?.realAmplitude)")
-//            print("Not Heard : \(aux!.notHeardTest?.realAmplitude)")
-//            aux = aux!.notHeardTest
-//            print("\n")
-//        }
-//        
-//        debugPrint("---- Acabou ----")
-//        //        #endif
-//    }
+    //    func printTree() {
+    //        //        #if DEBUG
+    //        var aux = stepsTree
+    //
+    //        debugPrint("---- Printando a arvore pelo HEARD ----")
+    //        while(aux != nil) {
+    //            print("Frequencia: Optional(\(aux!.frequency))")
+    //            print("Current   : Optional(\(aux!.realAmplitude))")
+    //            print("Heard     : \(aux!.heardTest?.realAmplitude)")
+    //            print("Not Heard : \(aux!.notHeardTest?.realAmplitude)")
+    //            aux = aux!.heardTest
+    //            print("\n")
+    //        }
+    //
+    //        debugPrint("\n\n---- Printando a arvore pelo NOT HEARD ----")
+    //        aux = stepsTree
+    //        while(aux != nil) {
+    //            print("Frequencia: Optional(\(aux!.frequency))")
+    //            print("Current   : Optional(\(aux!.realAmplitude))")
+    //            print("Heard     : \(aux!.heardTest?.realAmplitude)")
+    //            print("Not Heard : \(aux!.notHeardTest?.realAmplitude)")
+    //            aux = aux!.notHeardTest
+    //            print("\n")
+    //        }
+    //
+    //        debugPrint("---- Acabou ----")
+    //        //        #endif
+    //    }
     
+}
+
+
+extension Double {
+    func roundTo(decimalPlaces: Int = 3) -> Double {
+        let converter = NumberFormatter()
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .none
+        formatter.minimumFractionDigits = decimalPlaces
+        formatter.roundingMode = .down
+        formatter.maximumFractionDigits = decimalPlaces
+        if let stringFromDouble =  formatter.string(from: NSNumber(value: self)) {
+            if let doubleFromString = converter.number(from: stringFromDouble ) as? Double {
+                return doubleFromString
+            }
+        }
+        return 0
+    }
 }
