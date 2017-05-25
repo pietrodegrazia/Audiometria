@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MessageUI
 
-class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
     
     // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
@@ -57,8 +58,33 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     // MARK: - Private methods
+    private func presentModalMailComposerViewController(animated: Bool = true) {
+        if MFMailComposeViewController.canSendMail() {
+            let mailComposeVC = MFMailComposeViewController()
+            mailComposeVC.delegate = self
+            
+            mailComposeVC.setSubject("Resultados exame audiometria")
+            mailComposeVC.setMessageBody("<b>RESULTADOS</b>", isHTML: true)
+            mailComposeVC.setToRecipients(["recipients"])
+            
+            present(mailComposeVC, animated: animated, completion: nil)
+        } else {
+            let title = NSLocalizedString("Error", value: "Error", comment: "")
+            let message = NSLocalizedString("Your device doesn't support Mail messaging", value: "Your device doesn't support Mail messaging", comment: "")
+            
+            if #available(iOS 9, *) {
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                show(alert, sender: nil)
+            } else {
+                let alertView = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: NSLocalizedString("OK", value: "OK", comment: ""))
+                alertView.show()
+            }
+        }
+    }
+    
     @objc private func shareButtonAction() {
         //TODO: Implements export sheet, including e-mail export
+        presentModalMailComposerViewController()
     }
     
     @objc private func doneButtonAction() {
@@ -85,7 +111,6 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         present(alertController, animated: true, completion: nil)
     }
     
-    
     // MARK: - UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
         return objectArray.count
@@ -106,7 +131,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case .notHeard:
             cell.resultText.text = "\(resultTuple.amplitude)db"
             cell.resultImage.image = #imageLiteral(resourceName: "notHeard")
-
+            
         case .heard:
             cell.resultText.text = "\(resultTuple.amplitude)db"
             cell.resultImage.image = #imageLiteral(resourceName: "heard")
@@ -131,10 +156,13 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    //MARK: - MFMailComposeViewControllerDelegate
+    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+        if error != nil {
+            print("Error: \(error)")
+        }
+        
+        dismiss(animated: true)
+    }
     
-}
-
-
-func -(rect: CGRect, value: NSNumber) -> CGRect {
-    return CGRect(x: rect.origin.x, y: rect.origin.y, width: rect.size.width - CGFloat(value), height: rect.size.height - CGFloat(value))
 }
