@@ -19,7 +19,7 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // MARK: - Private types
     private struct Objects {
-        var sectionName: Double!
+        var sectionName: Frequency!
         var sectionObjects: [ResultTuple]!
     }
     
@@ -96,26 +96,27 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ResultCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: ResultTableViewCell.identifier, for: indexPath) as! ResultTableViewCell
+        
         let section = indexPath.section
         let row = indexPath.row
         let resultTuple = objectArray[section].sectionObjects[row]
         
         switch resultTuple.result {
         case .notHeard:
-            cell.textLabel?.text = "Não ouviu em: \(resultTuple.amplitude)"
-            cell.backgroundColor = .red
-            
+            cell.resultText.text = "\(resultTuple.amplitude)db"
+            cell.resultImage.image = #imageLiteral(resourceName: "notHeard")
+
         case .heard:
-            cell.textLabel?.text = "Ouviu em: \(resultTuple.amplitude)"
-            cell.backgroundColor = .green
+            cell.resultText.text = "\(resultTuple.amplitude)db"
+            cell.resultImage.image = #imageLiteral(resourceName: "heard")
             
         case .outOfRange:
-            cell.textLabel?.text = "Fora da amplitude suportada ⚠️ \(resultTuple.amplitude)"
-            cell.backgroundColor = .blue
+            cell.resultText.text = "\(resultTuple.amplitude) não suportada!"
+            cell.resultImage.image = #imageLiteral(resourceName: "outOfRange")
             
         case .notTested:
-            cell.textLabel?.text = "Amplitude não testada \(resultTuple.amplitude)"
+            cell.resultText.text = "Amplitude \(resultTuple.amplitude) não testada."
             cell.backgroundColor = .yellow
         }
         
@@ -124,11 +125,16 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if let frequency = objectArray[section].sectionName {
-            return ("Frequencia: \(frequency) Hz")
+            return ("Frequência: \(frequency) Hz")
         } else {
             return "Sem frequencia"
         }
     }
     
     
+}
+
+
+func -(rect: CGRect, value: NSNumber) -> CGRect {
+    return CGRect(x: rect.origin.x, y: rect.origin.y, width: rect.size.width - CGFloat(value), height: rect.size.height - CGFloat(value))
 }

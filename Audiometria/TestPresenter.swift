@@ -36,8 +36,34 @@ let iPodTouchAmplitudeAPITable:[Frequency:[AmplitudeReal:AmplitudeAPI]] = [
     ]
 ]
 
-typealias ResultTuple = (amplitude: Double, result: StepResult)
-typealias Results = [Double:[ResultTuple]]
+func amplitudeReal(frequency: Frequency, amplitudeAPI: AmplitudeAPI) -> AmplitudeReal {
+    let dict = iPodTouchAmplitudeAPITable[frequency]!
+    let filtered = dict.filter { (dict: (key: AmplitudeReal, value: AmplitudeAPI)) -> Bool in
+        return dict.value == amplitudeAPI
+    }
+    
+    if let val = filtered.first {
+        return val.key
+    } else {
+        print("(\(frequency), \((amplitudeAPI)))")
+        assertionFailure("Deu ruim!")
+        return 0
+    }
+}
+
+func amplitudeAPI(frequency: Frequency, amplitudeReal: AmplitudeReal) -> AmplitudeAPI {
+    let dict = iPodTouchAmplitudeAPITable[frequency]!
+    if let filtered = dict[amplitudeReal] {
+        return filtered
+    } else {
+        print("(\(frequency), \((amplitudeReal))")
+        assertionFailure("Deu ruim!")
+        return 0
+    }
+}
+
+typealias ResultTuple = (amplitude: AmplitudeAPI, result: StepResult)
+typealias Results = [Frequency:[ResultTuple]]
 
 protocol TestInterface {
     func didStartTest()

@@ -28,6 +28,7 @@
 		62EE89D21CEBB76B003965BA /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EE89D11CEBB76B003965BA /* CircleView.swift */; };
 		62EE89D51CEBCD4A003965BA /* MeterTableOC.m in Sources */ = {isa = PBXBuildFile; fileRef = 62EE89D41CEBCD4A003965BA /* MeterTableOC.m */; };
 		62EE89D71CEBD1F8003965BA /* MeterTableSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EE89D61CEBD1F8003965BA /* MeterTableSwift.swift */; };
+		62FDD0D41ECF6A4600C08E2C /* ResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FDD0D31ECF6A4600C08E2C /* ResultTableViewCell.swift */; };
 		64EE672D1E935F8D00DD973D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EE672C1E935F8D00DD973D /* MainViewController.swift */; };
 		64EE67301E93605B00DD973D /* AllResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EE672F1E93605B00DD973D /* AllResultsViewController.swift */; };
 /* End PBXBuildFile section */
@@ -58,6 +59,7 @@
 		62EE89D31CEBCD4A003965BA /* MeterTableOC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MeterTableOC.h; sourceTree = "<group>"; };
 		62EE89D41CEBCD4A003965BA /* MeterTableOC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeterTableOC.m; sourceTree = "<group>"; };
 		62EE89D61CEBD1F8003965BA /* MeterTableSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeterTableSwift.swift; sourceTree = "<group>"; };
+		62FDD0D31ECF6A4600C08E2C /* ResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultTableViewCell.swift; sourceTree = "<group>"; };
 		64EE672C1E935F8D00DD973D /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Main/MainViewController.swift; sourceTree = "<group>"; };
 		64EE672F1E93605B00DD973D /* AllResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllResultsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -121,8 +123,9 @@
 		622C77F71CF33ED0000C0D38 /* Result */ = {
 			isa = PBXGroup;
 			children = (
-				622C77FB1CF3428E000C0D38 /* ResultViewController.swift */,
 				64EE672F1E93605B00DD973D /* AllResultsViewController.swift */,
+				62FDD0D31ECF6A4600C08E2C /* ResultTableViewCell.swift */,
+				622C77FB1CF3428E000C0D38 /* ResultViewController.swift */,
 			);
 			path = Result;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				358F4F7F1CCAB66900A77D67 /* LABELOViewController.swift in Sources */,
 				64EE67301E93605B00DD973D /* AllResultsViewController.swift in Sources */,
 				358F4F7D1CCAB66900A77D67 /* AppDelegate.swift in Sources */,
+				62FDD0D41ECF6A4600C08E2C /* ResultTableViewCell.swift in Sources */,
 				35EC14D41CCFFF6300974C18 /* NoiseMeterViewController.swift in Sources */,
 				62DA2EEB1E96E24F005FBB89 /* TonePlayer.swift in Sources */,
 				62EE89D71CEBD1F8003965BA /* MeterTableSwift.swift in Sources */,

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ur8-13-Jby">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ur8-13-Jby">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -360,36 +360,53 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9Tg-b2-z8A">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="58" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="9Tg-b2-z8A">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ResultCell" textLabel="PfT-wu-A8U" style="IBUITableViewCellStyleDefault" id="qlJ-6e-mRm">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ResultTableViewCell" id="ghG-UZ-o1w" customClass="ResultTableViewCell" customModule="Ouviu" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qlJ-6e-mRm" id="ZYc-li-uys">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ghG-UZ-o1w" id="NzI-WJ-Ff4">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PfT-wu-A8U">
-                                                    <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rk4-CG-3RT">
+                                                    <rect key="frame" x="8" y="11.5" width="35" height="35"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="35" id="3Pm-7s-udO"/>
+                                                        <constraint firstAttribute="width" constant="35" id="iC5-wg-qKc"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y5b-Yj-Xoe">
+                                                    <rect key="frame" x="51" y="19" width="316" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="y5b-Yj-Xoe" secondAttribute="trailing" id="9gi-iT-NyI"/>
+                                                <constraint firstItem="y5b-Yj-Xoe" firstAttribute="leading" secondItem="Rk4-CG-3RT" secondAttribute="trailing" constant="8" id="PDn-8L-LB2"/>
+                                                <constraint firstItem="Rk4-CG-3RT" firstAttribute="leading" secondItem="NzI-WJ-Ff4" secondAttribute="leading" constant="8" id="Veb-8T-Mjb"/>
+                                                <constraint firstItem="y5b-Yj-Xoe" firstAttribute="centerY" secondItem="NzI-WJ-Ff4" secondAttribute="centerY" id="eMW-vC-brf"/>
+                                                <constraint firstItem="Rk4-CG-3RT" firstAttribute="centerY" secondItem="NzI-WJ-Ff4" secondAttribute="centerY" id="h99-ZJ-fAT"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="resultImage" destination="Rk4-CG-3RT" id="Xh9-Ut-Wxh"/>
+                                            <outlet property="resultText" destination="y5b-Yj-Xoe" id="vLC-ed-zei"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="9Tg-b2-z8A" firstAttribute="top" secondItem="bfL-lE-dFO" secondAttribute="top" id="Ego-qd-Smu"/>
-                            <constraint firstAttribute="trailing" secondItem="9Tg-b2-z8A" secondAttribute="trailing" id="YmK-1k-TRZ"/>
-                            <constraint firstItem="9Tg-b2-z8A" firstAttribute="leading" secondItem="bfL-lE-dFO" secondAttribute="leading" id="eJ4-1a-XX8"/>
-                            <constraint firstItem="irX-rU-YCU" firstAttribute="top" secondItem="9Tg-b2-z8A" secondAttribute="bottom" id="f1K-5P-eR9"/>
+                            <constraint firstItem="9Tg-b2-z8A" firstAttribute="top" secondItem="bfL-lE-dFO" secondAttribute="top" id="5oW-Ps-hD3"/>
+                            <constraint firstAttribute="trailing" secondItem="9Tg-b2-z8A" secondAttribute="trailing" id="Tb5-3b-Zpv"/>
+                            <constraint firstItem="9Tg-b2-z8A" firstAttribute="leading" secondItem="bfL-lE-dFO" secondAttribute="leading" id="tDE-8C-748"/>
+                            <constraint firstItem="irX-rU-YCU" firstAttribute="top" secondItem="9Tg-b2-z8A" secondAttribute="bottom" id="xeF-zy-itV"/>
                         </constraints>
                     </view>
                     <connections>
@@ -398,7 +415,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bik-kY-70s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2938" y="650"/>
+            <point key="canvasLocation" x="2936.8000000000002" y="649.92503748125944"/>
         </scene>
         <!--Noise Meter View Controller-->
         <scene sceneID="DWG-Wc-vkN">
@@ -534,6 +551,6 @@
         <image name="playing" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="VnJ-8U-Kai"/>
+        <segue reference="uF6-l3-K4Q"/>
     </inferredMetricsTieBreakers>
 </document>

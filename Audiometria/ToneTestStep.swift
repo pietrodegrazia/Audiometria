@@ -24,14 +24,14 @@ enum StepResult: Int {
 
 class ToneTestStep {
     
-    var frequency: Double
+    var frequency: Frequency
     var amplitude: Double
     var heardTest: ToneTestStep?
     var notHeardTest: ToneTestStep?
     var heard = false
     var result: StepResult
     
-    init(frequency: Double, amplitude: Double, heardTest: ToneTestStep? = nil, notHeardTest: ToneTestStep? = nil, result: StepResult = .notTested) {
+    init(frequency: Frequency, amplitude: Double, heardTest: ToneTestStep? = nil, notHeardTest: ToneTestStep? = nil, result: StepResult = .notTested) {
         self.frequency = frequency
         self.amplitude = amplitude
         self.heardTest = heardTest

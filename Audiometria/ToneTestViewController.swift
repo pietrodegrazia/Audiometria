@@ -46,7 +46,7 @@ class ToneTestViewController: UIViewController, PlayerInterface, TestInterface {
     }
     
     @objc private func timedOut() {
-        //        debugPrint("Timeout")
+        debugPrint("Não ouviu")
         stopSound()
         eventHandler.timeout()
     }
@@ -110,8 +110,8 @@ class ToneTestViewController: UIViewController, PlayerInterface, TestInterface {
     }
     
     func play(step: ToneTestStep, withDuration duration: TimeInterval) {
-        debugPrint("Iniciando som (\(step.frequency), \(amplitude(fromStep: step)), \(step.amplitude) com duration \(duration))")
-        player?.play(amplitude: step.amplitude, frequency: step.frequency)
+        debugPrint("Iniciando som (\(step.frequency), \(amplitudeReal(frequency: step.frequency, amplitudeAPI: step.amplitude)), \(step.amplitude) com duration \(duration))\n")
+        player?.play(amplitude: step.amplitude, frequency: Double(step.frequency))
         createTimer(withTimerInterval: duration)
     }
     
