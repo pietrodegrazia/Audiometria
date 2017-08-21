@@ -9,6 +9,8 @@
 import Foundation
 //import RealmSwift
 
+// Ver se será necessario converter o enum pra int pra salvar no Realm e alterar a funcao de conversao pra pegar o rawValue
+
 class ResultsRealm /*: Object */ {
     var freq500_20db: StepResult
     var freq500_40db: StepResult
