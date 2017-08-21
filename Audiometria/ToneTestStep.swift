@@ -20,6 +20,8 @@ enum StepResult: Int {
     
     // Dispositivo nao consegue tocar a frequencia/amplitude
     case outOfRange
+    
+    case unknown
 }
 
 class ToneTestStep {

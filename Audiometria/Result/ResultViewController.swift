@@ -143,6 +143,8 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case .notTested:
             cell.resultText.text = "Amplitude \(resultTuple.amplitude) não testada."
             cell.backgroundColor = .yellow
+        case .unknown:
+            debugPrint("Valor inválido! \(resultTuple)")
         }
         
         return cell
