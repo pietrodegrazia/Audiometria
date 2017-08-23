@@ -8,11 +8,6 @@
 
 import UIKit
 
-class Patient {
-    var id: String?
-    var result: Results?
-}
-
 class AllResultsViewController: UIViewController {
     
     //The key is the patient ID

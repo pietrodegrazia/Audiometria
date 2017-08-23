@@ -32,6 +32,7 @@
 		62FDD0D41ECF6A4600C08E2C /* ResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FDD0D31ECF6A4600C08E2C /* ResultTableViewCell.swift */; };
 		6411011B1F4D386C00FC5993 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 641101191F4D386C00FC5993 /* Realm.framework */; };
 		6411011C1F4D386C00FC5993 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6411011A1F4D386C00FC5993 /* RealmSwift.framework */; };
+		641101261F4D437800FC5993 /* Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641101251F4D437800FC5993 /* Patient.swift */; };
 		64EE672D1E935F8D00DD973D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EE672C1E935F8D00DD973D /* MainViewController.swift */; };
 		64EE67301E93605B00DD973D /* AllResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EE672F1E93605B00DD973D /* AllResultsViewController.swift */; };
 /* End PBXBuildFile section */
@@ -66,6 +67,7 @@
 		62FDD0D31ECF6A4600C08E2C /* ResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultTableViewCell.swift; sourceTree = "<group>"; };
 		641101191F4D386C00FC5993 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		6411011A1F4D386C00FC5993 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
+		641101251F4D437800FC5993 /* Patient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Patient.swift; sourceTree = "<group>"; };
 		64EE672C1E935F8D00DD973D /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Main/MainViewController.swift; sourceTree = "<group>"; };
 		64EE672F1E93605B00DD973D /* AllResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllResultsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -180,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				62BA15E31F4A7AE300CEFBDC /* ResultRealm.swift */,
+				641101251F4D437800FC5993 /* Patient.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -315,6 +318,7 @@
 				6295C3E61CE2BBFC003B09E5 /* NoiseMeter.swift in Sources */,
 				62DA2EE91E96E23D005FBB89 /* ToneTestStep.swift in Sources */,
 				52B4A98E1CD290DF00AFED66 /* ToneTestViewController.swift in Sources */,
+				641101261F4D437800FC5993 /* Patient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
