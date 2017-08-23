@@ -7,83 +7,81 @@
 //
 
 import Foundation
-//import RealmSwift
+import RealmSwift
 
-// Ver se será necessario converter o enum pra int pra salvar no Realm e alterar a funcao de conversao pra pegar o rawValue
-
-class ResultsRealm /*: Object */ {
-    var freq500_20db: StepResult
-    var freq500_40db: StepResult
-    var freq500_60db: StepResult
+class ResultsRealm: Object {
+    dynamic var freq500_20db = -1
+    dynamic var freq500_40db = -1
+    dynamic var freq500_60db = -1
     
-    var freq1000_20db: StepResult
-    var freq1000_40db: StepResult
-    var freq1000_60db: StepResult
+    dynamic var freq1000_20db = -1
+    dynamic var freq1000_40db = -1
+    dynamic var freq1000_60db = -1
     
-    var freq2000_20db: StepResult
-    var freq2000_40db: StepResult
-    var freq2000_60db: StepResult
+    dynamic var freq2000_20db = -1
+    dynamic var freq2000_40db = -1
+    dynamic var freq2000_60db = -1
     
-    var freq4000_20db: StepResult
-    var freq4000_40db: StepResult
-    var freq4000_60db: StepResult
+    dynamic var freq4000_20db = -1
+    dynamic var freq4000_40db = -1
+    dynamic var freq4000_60db = -1
     
-    var freq8000_20db: StepResult
-    var freq8000_40db: StepResult
-    var freq8000_60db: StepResult
+    dynamic var freq8000_20db = -1
+    dynamic var freq8000_40db = -1
+    dynamic var freq8000_60db = -1
     
     func asResultDictionary() -> Results {
         let dict:Results = [
             500:[
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[500]![20]!, result: freq500_20db),
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[500]![40]!, result: freq500_40db),
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[500]![60]!, result: freq500_60db)
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[500]![20]!, result: StepResult(rawValue: freq500_20db)!),
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[500]![40]!, result: StepResult(rawValue: freq500_40db)!),
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[500]![60]!, result: StepResult(rawValue: freq500_60db)!)
             ],
             1000:[
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[1000]![20]!, result: freq1000_20db),
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[1000]![40]!, result: freq1000_40db),
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[1000]![60]!, result: freq1000_60db)
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[1000]![20]!, result: StepResult(rawValue: freq1000_20db)!),
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[1000]![40]!, result: StepResult(rawValue: freq1000_40db)!),
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[1000]![60]!, result: StepResult(rawValue: freq1000_60db)!)
             ],
             2000:[
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[2000]![20]!, result: freq2000_20db),
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[2000]![40]!, result: freq2000_40db),
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[2000]![60]!, result: freq2000_60db)
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[2000]![20]!, result: StepResult(rawValue: freq2000_20db)!),
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[2000]![40]!, result: StepResult(rawValue: freq2000_40db)!),
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[2000]![60]!, result: StepResult(rawValue: freq2000_60db)!)
             ],
             4000:[
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[4000]![20]!, result: freq4000_20db),
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[4000]![40]!, result: freq4000_40db),
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[4000]![60]!, result: freq4000_60db)
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[4000]![20]!, result: StepResult(rawValue: freq4000_20db)!),
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[4000]![40]!, result: StepResult(rawValue: freq4000_40db)!),
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[4000]![60]!, result: StepResult(rawValue: freq4000_60db)!)
             ],
             8000:[
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[8000]![20]!, result: freq8000_20db),
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[8000]![40]!, result: freq8000_40db),
-                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[8000]![60]!, result: freq8000_60db)
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[8000]![20]!, result: StepResult(rawValue: freq8000_20db)!),
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[8000]![40]!, result: StepResult(rawValue: freq8000_40db)!),
+                ResultTuple(amplitude: iPodTouchAmplitudeAPITable[8000]![60]!, result: StepResult(rawValue: freq8000_60db)!)
             ]
         ]
         
         return dict
     }
     
-    init(resultsDictionary: Results) {
-        freq500_20db = .unknown
-        freq500_40db = .unknown
-        freq500_60db = .unknown
+    func setVariableFrom(resultsDictionary: Results) {
+        freq500_20db = StepResult.unknown.rawValue
+        freq500_40db = StepResult.unknown.rawValue
+        freq500_60db = StepResult.unknown.rawValue
         
-        freq1000_20db = .unknown
-        freq1000_40db = .unknown
-        freq1000_60db = .unknown
+        freq1000_20db = StepResult.unknown.rawValue
+        freq1000_40db = StepResult.unknown.rawValue
+        freq1000_60db = StepResult.unknown.rawValue
         
-        freq2000_20db = .unknown
-        freq2000_40db = .unknown
-        freq2000_60db = .unknown
+        freq2000_20db = StepResult.unknown.rawValue
+        freq2000_40db = StepResult.unknown.rawValue
+        freq2000_60db = StepResult.unknown.rawValue
         
-        freq4000_20db = .unknown
-        freq4000_40db = .unknown
-        freq4000_60db = .unknown
+        freq4000_20db = StepResult.unknown.rawValue
+        freq4000_40db = StepResult.unknown.rawValue
+        freq4000_60db = StepResult.unknown.rawValue
         
-        freq8000_20db = .unknown
-        freq8000_40db = .unknown
-        freq8000_60db = .unknown
+        freq8000_20db = StepResult.unknown.rawValue
+        freq8000_40db = StepResult.unknown.rawValue
+        freq8000_60db = StepResult.unknown.rawValue
         
         for (frequency, results) in resultsDictionary {
             switch frequency {
@@ -92,11 +90,11 @@ class ResultsRealm /*: Object */ {
                     let resAux = result.result
                     switch result.amplitude {
                     case 20:
-                        freq500_20db = resAux
+                        freq500_20db = resAux.rawValue
                     case 40:
-                        freq500_40db = resAux
+                        freq500_40db = resAux.rawValue
                     case 60:
-                        freq500_60db = resAux
+                        freq500_60db = resAux.rawValue
                     default:
                         debugPrint("Amplitude \(result.amplitude) não esperada na frequencia \(frequency)")
                     }
@@ -108,11 +106,11 @@ class ResultsRealm /*: Object */ {
                     let resAux = result.result
                     switch result.amplitude {
                     case 20:
-                        freq1000_20db = resAux
+                        freq1000_20db = resAux.rawValue
                     case 40:
-                        freq1000_40db = resAux
+                        freq1000_40db = resAux.rawValue
                     case 60:
-                        freq1000_60db = resAux
+                        freq1000_60db = resAux.rawValue
                     default:
                         debugPrint("Amplitude \(result.amplitude) não esperada na frequencia \(frequency)")
                     }
@@ -124,11 +122,11 @@ class ResultsRealm /*: Object */ {
                     let resAux = result.result
                     switch result.amplitude {
                     case 20:
-                        freq2000_20db = resAux
+                        freq2000_20db = resAux.rawValue
                     case 40:
-                        freq2000_40db = resAux
+                        freq2000_40db = resAux.rawValue
                     case 60:
-                        freq2000_60db = resAux
+                        freq2000_60db = resAux.rawValue
                     default:
                         debugPrint("Amplitude \(result.amplitude) não esperada na frequencia \(frequency)")
                     }
@@ -140,11 +138,11 @@ class ResultsRealm /*: Object */ {
                     let resAux = result.result
                     switch result.amplitude {
                     case 20:
-                        freq4000_20db = resAux
+                        freq4000_20db = resAux.rawValue
                     case 40:
-                        freq4000_40db = resAux
+                        freq4000_40db = resAux.rawValue
                     case 60:
-                        freq4000_60db = resAux
+                        freq4000_60db = resAux.rawValue
                     default:
                         debugPrint("Amplitude \(result.amplitude) não esperada na frequencia \(frequency)")
                     }
@@ -156,16 +154,16 @@ class ResultsRealm /*: Object */ {
                     let resAux = result.result
                     switch result.amplitude {
                     case 20:
-                        freq8000_20db = resAux
+                        freq8000_20db = resAux.rawValue
                     case 40:
-                        freq8000_40db = resAux
+                        freq8000_40db = resAux.rawValue
                     case 60:
-                        freq8000_60db = resAux
+                        freq8000_60db = resAux.rawValue
                     default:
                         debugPrint("Amplitude \(result.amplitude) não esperada na frequencia \(frequency)")
                     }
                 }
-            
+                
             default:
                 debugPrint("Frequencia \(frequency) não esperada")
                 
