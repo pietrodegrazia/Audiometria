@@ -30,6 +30,8 @@
 		62EE89D51CEBCD4A003965BA /* MeterTableOC.m in Sources */ = {isa = PBXBuildFile; fileRef = 62EE89D41CEBCD4A003965BA /* MeterTableOC.m */; };
 		62EE89D71CEBD1F8003965BA /* MeterTableSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62EE89D61CEBD1F8003965BA /* MeterTableSwift.swift */; };
 		62FDD0D41ECF6A4600C08E2C /* ResultTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FDD0D31ECF6A4600C08E2C /* ResultTableViewCell.swift */; };
+		6411011B1F4D386C00FC5993 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 641101191F4D386C00FC5993 /* Realm.framework */; };
+		6411011C1F4D386C00FC5993 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6411011A1F4D386C00FC5993 /* RealmSwift.framework */; };
 		64EE672D1E935F8D00DD973D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EE672C1E935F8D00DD973D /* MainViewController.swift */; };
 		64EE67301E93605B00DD973D /* AllResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EE672F1E93605B00DD973D /* AllResultsViewController.swift */; };
 /* End PBXBuildFile section */
@@ -62,6 +64,8 @@
 		62EE89D41CEBCD4A003965BA /* MeterTableOC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MeterTableOC.m; sourceTree = "<group>"; };
 		62EE89D61CEBD1F8003965BA /* MeterTableSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeterTableSwift.swift; sourceTree = "<group>"; };
 		62FDD0D31ECF6A4600C08E2C /* ResultTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultTableViewCell.swift; sourceTree = "<group>"; };
+		641101191F4D386C00FC5993 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
+		6411011A1F4D386C00FC5993 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		64EE672C1E935F8D00DD973D /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Main/MainViewController.swift; sourceTree = "<group>"; };
 		64EE672F1E93605B00DD973D /* AllResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllResultsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -71,6 +75,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6411011B1F4D386C00FC5993 /* Realm.framework in Frameworks */,
+				6411011C1F4D386C00FC5993 /* RealmSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +124,8 @@
 		358F4F911CCADC7F00A77D67 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				641101191F4D386C00FC5993 /* Realm.framework */,
+				6411011A1F4D386C00FC5993 /* RealmSwift.framework */,
 				520D22451CD12FE8002931F1 /* Audiometria-Bridging-Header.h */,
 			);
 			name = Frameworks;
@@ -202,6 +210,7 @@
 				358F4F751CCAB66900A77D67 /* Sources */,
 				358F4F761CCAB66900A77D67 /* Frameworks */,
 				358F4F771CCAB66900A77D67 /* Resources */,
+				6411011D1F4D387C00FC5993 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -259,6 +268,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6411011D1F4D387C00FC5993 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
+			);
+			name = Carthage;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		358F4F751CCAB66900A77D67 /* Sources */ = {
@@ -409,7 +437,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Audiometria/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.darkshine.Ouviu;
@@ -428,7 +459,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Audiometria/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = io.darkshine.Ouviu;
