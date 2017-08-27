@@ -11,9 +11,14 @@ import RealmSwift
 
 class Patient: Object {
     //Id deve ser gerado na tela de resultados quando o usuario escolhe salvar resultado
-    dynamic var id = ""
-    //Results deve ser um Object
-//    dynamic var result: Results?
+    dynamic var id = UUID().uuidString
+    dynamic var results: ResultsRealm?
+    
+    
+    convenience init(results: ResultsRealm) {
+        self.init()
+        self.results = results
+    }
     
     override class func primaryKey() -> String? {
         return "id"
