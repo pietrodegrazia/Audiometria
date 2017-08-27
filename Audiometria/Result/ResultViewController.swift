@@ -8,6 +8,7 @@
 
 import UIKit
 import MessageUI
+import RealmSwift
 
 class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
     
@@ -57,6 +58,20 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.reloadData()
     }
     
+    private func saveOnRealm() {
+        let resultsRealm = ResultsRealm()
+        resultsRealm.setVariableFrom(resultsDictionary: results)
+        let patient = Patient(results: resultsRealm)
+        do {
+            let realm = try Realm()
+            try realm.write {
+                realm.add(patient, update: true)
+            }
+        } catch let error {
+            print(error)
+        }
+    }
+    
     // MARK: - Private methods
     private func presentModalMailComposerViewController(animated: Bool = true) {
         if MFMailComposeViewController.canSendMail() {
@@ -92,16 +107,14 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
                                                 message: "Caso não queira salver esse resultado será descartado permanentemente",
                                                 preferredStyle: UIAlertControllerStyle.actionSheet)
         
-        let cancelAction = UIAlertAction(title: "Cancelar", style: UIAlertActionStyle.cancel) { (alertAction) in
-            //TODO: Cancel
-        }
+        let cancelAction = UIAlertAction(title: "Cancelar", style: UIAlertActionStyle.cancel, handler: nil)
         
         let saveAction = UIAlertAction(title: "Salvar", style: UIAlertActionStyle.default) { (alertAction) in
-            //TODO: Save, on the save action it creates a Patient and save it on the database
+            self.saveOnRealm()
         }
         
         let deleteAction = UIAlertAction(title: "Deletar", style: UIAlertActionStyle.destructive) { (alertAction) in
-            //TODO: delete
+            //TODO: present initial VC
         }
         
         alertController.addAction(cancelAction)
