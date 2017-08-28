@@ -33,6 +33,7 @@
 		6411011B1F4D386C00FC5993 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 641101191F4D386C00FC5993 /* Realm.framework */; };
 		6411011C1F4D386C00FC5993 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6411011A1F4D386C00FC5993 /* RealmSwift.framework */; };
 		641101261F4D437800FC5993 /* Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641101251F4D437800FC5993 /* Patient.swift */; };
+		6423CE541F53E17300877F24 /* CSV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6423CE531F53E17300877F24 /* CSV.framework */; };
 		64EE672D1E935F8D00DD973D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EE672C1E935F8D00DD973D /* MainViewController.swift */; };
 		64EE67301E93605B00DD973D /* AllResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EE672F1E93605B00DD973D /* AllResultsViewController.swift */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 		641101191F4D386C00FC5993 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		6411011A1F4D386C00FC5993 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		641101251F4D437800FC5993 /* Patient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Patient.swift; sourceTree = "<group>"; };
+		6423CE531F53E17300877F24 /* CSV.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CSV.framework; path = Carthage/Build/iOS/CSV.framework; sourceTree = "<group>"; };
 		64EE672C1E935F8D00DD973D /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Main/MainViewController.swift; sourceTree = "<group>"; };
 		64EE672F1E93605B00DD973D /* AllResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllResultsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -79,6 +81,7 @@
 			files = (
 				6411011B1F4D386C00FC5993 /* Realm.framework in Frameworks */,
 				6411011C1F4D386C00FC5993 /* RealmSwift.framework in Frameworks */,
+				6423CE541F53E17300877F24 /* CSV.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +129,7 @@
 		358F4F911CCADC7F00A77D67 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6423CE531F53E17300877F24 /* CSV.framework */,
 				641101191F4D386C00FC5993 /* Realm.framework */,
 				6411011A1F4D386C00FC5993 /* RealmSwift.framework */,
 				520D22451CD12FE8002931F1 /* Audiometria-Bridging-Header.h */,
@@ -137,8 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				64EE672F1E93605B00DD973D /* AllResultsViewController.swift */,
-				62FDD0D31ECF6A4600C08E2C /* ResultTableViewCell.swift */,
 				622C77FB1CF3428E000C0D38 /* ResultViewController.swift */,
+				62FDD0D31ECF6A4600C08E2C /* ResultTableViewCell.swift */,
 			);
 			path = Result;
 			sourceTree = "<group>";
@@ -281,6 +285,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/Realm.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/RealmSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/CSV.framework",
 			);
 			name = Carthage;
 			outputPaths = (

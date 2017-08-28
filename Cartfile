@@ -1,1 +1,2 @@
 github "realm/realm-cocoa"
+github "yaslab/CSV.swift" ~> 2.0
