@@ -62,26 +62,32 @@ class ResultsRealm: Object {
         return dict
     }
     
+    convenience init(resultsDictionary: Results) {
+        self.init()
+        setVariableFrom(resultsDictionary: resultsDictionary)
+    }
+    
     func setVariableFrom(resultsDictionary: Results) {
-        freq500_20db = StepResult.unknown.rawValue
-        freq500_40db = StepResult.unknown.rawValue
-        freq500_60db = StepResult.unknown.rawValue
         
-        freq1000_20db = StepResult.unknown.rawValue
-        freq1000_40db = StepResult.unknown.rawValue
-        freq1000_60db = StepResult.unknown.rawValue
+        freq500_20db = StepResult.notTested.rawValue
+        freq500_40db = StepResult.notTested.rawValue
+        freq500_60db = StepResult.notTested.rawValue
         
-        freq2000_20db = StepResult.unknown.rawValue
-        freq2000_40db = StepResult.unknown.rawValue
-        freq2000_60db = StepResult.unknown.rawValue
+        freq1000_20db = StepResult.notTested.rawValue
+        freq1000_40db = StepResult.notTested.rawValue
+        freq1000_60db = StepResult.notTested.rawValue
         
-        freq4000_20db = StepResult.unknown.rawValue
-        freq4000_40db = StepResult.unknown.rawValue
-        freq4000_60db = StepResult.unknown.rawValue
+        freq2000_20db = StepResult.notTested.rawValue
+        freq2000_40db = StepResult.notTested.rawValue
+        freq2000_60db = StepResult.notTested.rawValue
         
-        freq8000_20db = StepResult.unknown.rawValue
-        freq8000_40db = StepResult.unknown.rawValue
-        freq8000_60db = StepResult.unknown.rawValue
+        freq4000_20db = StepResult.notTested.rawValue
+        freq4000_40db = StepResult.notTested.rawValue
+        freq4000_60db = StepResult.notTested.rawValue
+        
+        freq8000_20db = StepResult.notTested.rawValue
+        freq8000_40db = StepResult.notTested.rawValue
+        freq8000_60db = StepResult.notTested.rawValue
         
         for (frequency, results) in resultsDictionary {
             switch frequency {
