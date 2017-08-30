@@ -20,9 +20,7 @@ class NoiseMeter {
     
     // MARK: Public vars
     var isMeasuring: Bool {
-        get {
-            return recorder.isRecording
-        }
+        return recorder.isRecording
     }
     
     weak var delegate: NoiseMeterDelegate?
@@ -47,30 +45,28 @@ class NoiseMeter {
     }
     
     @objc func stopMeasure() {
-        do {
-            recorder.stop()
-            measureTimer?.invalidate()
-            try AVAudioSession.sharedInstance().setActive(false)
-        } catch let error {
-            delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.errorDeactivatingSession(error))
-        }
+        recorder.stop()
+        measureTimer?.invalidate()
     }
     
     // MARK: Private methods
     fileprivate func signForNotications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(startMeasureWithInterval), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(stopMeasure), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(routeChange), name: NSNotification.Name.AVAudioSessionRouteChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(startMeasureWithInterval),
+                                               name: NSNotification.Name.UIApplicationWillResignActive,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(stopMeasure),
+                                               name: NSNotification.Name.UIApplicationWillEnterForeground,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(routeChange),
+                                               name: NSNotification.Name.AVAudioSessionRouteChange,
+                                               object: nil)
     }
     
     fileprivate func pauseMeasure() {
-        do {
-            recorder.pause()
-            measureTimer?.invalidate()
-            try AVAudioSession.sharedInstance().setActive(false)
-        } catch let error {
-            delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.errorDeactivatingSession(error))
-        }
+        recorder.pause()
+        measureTimer?.invalidate()
     }
     
     fileprivate func recordWithPermission(_ setup: Bool) {
