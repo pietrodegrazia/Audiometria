@@ -12,6 +12,7 @@ import RealmSwift
 class Patient: Object {
     //Id deve ser gerado na tela de resultados quando o usuario escolhe salvar resultado
     dynamic var id = UUID().uuidString
+    dynamic var timestamp = Date()
     dynamic var results: ResultsRealm?
     
     
