@@ -10,24 +10,24 @@ import UIKit
 import MessageUI
 import RealmSwift
 
-class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UINavigationControllerDelegate {
+class ResultViewController: UIViewController, SimpleEmailComposer {
     
-    // MARK: - IBOutlets
     @IBOutlet weak var tableView: UITableView!
     
-    // MARK: - Public vars
-    var results: Results!
     var patient: Patient?
     
-    // MARK: - Private types
-    private struct Objects {
+    var results: Results? {
+        return patient?.results?.asResultDictionary()
+    }
+    
+    fileprivate struct Objects {
         var sectionName: Frequency!
         var sectionObjects: [ResultTuple]!
     }
     
-    // MARK: - Private vars
-    private var objectArray = [Objects]()
-    private lazy var leftBarButtonItem: UIBarButtonItem = { () -> UIBarButtonItem in
+    fileprivate var objectArray = [Objects]()
+    
+    private lazy var shareBarButtonItem: UIBarButtonItem = { () -> UIBarButtonItem in
         let button = UIBarButtonItem(barButtonSystemItem: .action,
                                      target: self,
                                      action: #selector(shareButtonAction))
@@ -41,90 +41,90 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return button
     }()
     
-    // MARK: - Lifecycle
+    private lazy var leftBarButtonItem: UIBarButtonItem = { () -> UIBarButtonItem in
+        let button = UIBarButtonItem(barButtonSystemItem: .cancel,
+                                     target: self,
+                                     action: #selector(cancelButtonAction))
+        button.title = "deletar"
+        button.tintColor = .red
+        return button
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard let results = results,
+            let patient = patient else { return }
         
-        tableView.delegate = self
         tableView.dataSource = self
         
-        navigationItem.leftBarButtonItem = leftBarButtonItem
-        navigationItem.rightBarButtonItem = rightBarButtonItem
-        
-        for (key, value) in results {
-            objectArray.append(Objects(sectionName: key, sectionObjects: value))
-        }
-        
+        savePatientOnRealm(patient)
+        setupNavigationBar()
+        populateDataSourceWith(results)
         tableView.reloadData()
     }
     
-    private func saveOnRealm() {
-        let resultsRealm = ResultsRealm()
-        resultsRealm.setVariableFrom(resultsDictionary: results)
-        let patient = Patient(results: resultsRealm)
+    private func populateDataSourceWith(_ results: Results) {
+        for (key, value) in results {
+            objectArray.append(Objects(sectionName: key, sectionObjects: value))
+        }
+    }
+    
+    private func setupNavigationBar() {
+        
+        title = patient?.reabableId()
+//        navigationItem.leftBarButtonItem = leftBarButtonItem
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+    }
+    
+    private func savePatientOnRealm(_ patient: Patient) {
         do {
             let realm = try Realm()
-            try realm.write {
-                realm.add(patient, update: true)
-            }
+            try realm.write { realm.add(patient, update: false) }
         } catch let error {
             print(error)
         }
     }
     
-    // MARK: - Private methods
-    private func presentModalMailComposerViewController(animated: Bool = true) {
-        if MFMailComposeViewController.canSendMail() {
-            let mailComposeVC = MFMailComposeViewController()
-            mailComposeVC.delegate = self
-            
-            mailComposeVC.setSubject("Resultados exame audiometria")
-            mailComposeVC.setMessageBody("<b>RESULTADOS</b>", isHTML: true)
-            mailComposeVC.setToRecipients(["recipients"])
-            
-            present(mailComposeVC, animated: animated, completion: nil)
-        } else {
-            let title = NSLocalizedString("Error", value: "Error", comment: "")
-            let message = NSLocalizedString("Your device doesn't support Mail messaging", value: "Your device doesn't support Mail messaging", comment: "")
-            
-            if #available(iOS 9, *) {
-                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                show(alert, sender: nil)
-            } else {
-                let alertView = UIAlertView(title: title, message: message, delegate: nil, cancelButtonTitle: NSLocalizedString("OK", value: "OK", comment: ""))
-                alertView.show()
-            }
+    private func deletePatientFromRealm(_ patient: Patient) {
+        do {
+            let realm = try Realm()
+            try realm.write { realm.delete(patient) }
+        } catch let error {
+            print(error)
         }
     }
     
-    @objc private func shareButtonAction() {
-        //TODO: Implements export sheet, including e-mail export
-        presentModalMailComposerViewController()
-    }
-    
-    @objc private func doneButtonAction() {
-        let alertController = UIAlertController(title: "Você deseja salvar o teste?",
-                                                message: "Caso não queira salver esse resultado será descartado permanentemente",
-                                                preferredStyle: UIAlertControllerStyle.actionSheet)
+    @objc private func cancelButtonAction() {
+        let alertController = UIAlertController(title: "Você deseja cancelar este teste?",
+                                                message: "O cancelamento do teste resulta em deleção permanente do mesmo, você deseja realmnete deletar esse resultado?",
+                                                preferredStyle: .actionSheet)
         
-        let cancelAction = UIAlertAction(title: "Cancelar", style: UIAlertActionStyle.cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
         
-        let saveAction = UIAlertAction(title: "Salvar", style: UIAlertActionStyle.default) { (alertAction) in
-            self.saveOnRealm()
-        }
-        
-        let deleteAction = UIAlertAction(title: "Deletar", style: UIAlertActionStyle.destructive) { (alertAction) in
-            //TODO: present initial VC
+        let deleteAction = UIAlertAction(title: "Deletar", style: .destructive) { (alertAction) in
+            self.deletePatientFromRealm(self.patient!)
+            self.navigationController?.popToRootViewController(animated: true)
         }
         
         alertController.addAction(cancelAction)
-        alertController.addAction(saveAction)
         alertController.addAction(deleteAction)
         
         present(alertController, animated: true, completion: nil)
     }
     
-    // MARK: - UITableViewDataSource
+    @objc private func doneButtonAction() {
+        navigationController?.popToRootViewController(animated: true)
+    }
+    
+    @objc private func shareButtonAction() {
+        let data = try! Exporter.exportPatient(patient!)
+        sendEmailWithData(data, fileName: "\(patient?.id ?? "unknown").csv")
+    }
+}
+
+
+extension ResultViewController: UITableViewDataSource {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return objectArray.count
     }
@@ -135,29 +135,12 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ResultTableViewCell.identifier, for: indexPath) as! ResultTableViewCell
-        
         let section = indexPath.section
         let row = indexPath.row
-        let resultTuple = objectArray[section].sectionObjects[row]
         
-        switch resultTuple.result {
-        case .notHeard:
-            cell.resultText.text = "\(resultTuple.amplitude)db"
-            cell.resultImage.image = #imageLiteral(resourceName: "notHeard")
-            
-        case .heard:
-            cell.resultText.text = "\(resultTuple.amplitude)db"
-            cell.resultImage.image = #imageLiteral(resourceName: "heard")
-            
-        case .outOfRange:
-            cell.resultText.text = "\(resultTuple.amplitude) não suportada!"
-            cell.resultImage.image = #imageLiteral(resourceName: "outOfRange")
-            
-        case .notTested:
-            cell.resultText.text = "Amplitude \(resultTuple.amplitude) não testada."
-            cell.backgroundColor = .yellow
-        case .unknown:
-            debugPrint("Valor inválido! \(resultTuple)")
+        let resultTuple = objectArray[section].sectionObjects[row]
+        if let frequency = objectArray[section].sectionName {
+            cell.configureWith(resultTuple, frequency: frequency)
         }
         
         return cell
@@ -170,14 +153,13 @@ class ResultViewController: UIViewController, UITableViewDelegate, UITableViewDa
             return "Sem frequencia"
         }
     }
-    
-    //MARK: - MFMailComposeViewControllerDelegate
-    func mailComposeController(controller: MFMailComposeViewController!, didFinishWithResult result: MFMailComposeResult, error: NSError!) {
+}
+
+extension ResultViewController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         if error != nil {
-            print("Error: \(error)")
+            print("Error: \(String(describing: error))")
         }
-        
         dismiss(animated: true)
     }
-    
 }
