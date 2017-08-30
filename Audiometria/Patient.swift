@@ -24,4 +24,8 @@ class Patient: Object {
     override class func primaryKey() -> String? {
         return "id"
     }
+    
+    func reabableId() -> String {
+        return id.substring(to:id.index(id.startIndex, offsetBy: 5))
+    }
 }
