@@ -16,37 +16,66 @@ enum ExporterError: Error {
 
 class Exporter {
     
+    private static let headerRow = ["patient",
+                                    "freq500_20db",
+                                    "freq500_40db",
+                                    "freq500_60db",
+                                    
+                                    "freq1000_20db",
+                                    "freq1000_40db",
+                                    "freq1000_60db",
+                                    
+                                    "freq2000_20db",
+                                    "freq2000_40db",
+                                    "freq2000_60db",
+                                    
+                                    "freq4000_20db",
+                                    "freq4000_40db",
+                                    "freq4000_60db",
+                                    
+                                    "freq8000_20db",
+                                    "freq8000_40db",
+                                    "freq8000_60db"]
+    
     static func exportPatient(_ patient: Patient) throws -> Data {
-        
-        guard let resultsRealm = patient.results else {
-            throw ExporterError.nilPatientResuls
-        }
         
         let stream = OutputStream(toMemory: ())
         let csv = try CSVWriter(stream: stream)
         
-        // Write CSV Header
-        try csv.write(row: ["patient",
-                            "freq500_20db",
-                            "freq500_40db",
-                            "freq500_60db",
-                            
-                            "freq1000_20db",
-                            "freq1000_40db",
-                            "freq1000_60db",
-                            
-                            "freq2000_20db",
-                            "freq2000_40db",
-                            "freq2000_60db",
-                            
-                            "freq4000_20db",
-                            "freq4000_40db",
-                            "freq4000_60db",
-                            
-                            "freq8000_20db",
-                            "freq8000_40db",
-                            "freq8000_60db"])
+        try csv.write(row: headerRow)
+        try csv.write(row: rowFromPatient(patient))
         
+        csv.stream.close()
+        
+        if let csvData = stream.property(forKey: .dataWrittenToMemoryStreamKey) as? NSData {
+            return Data(referencing: csvData)
+        } else {
+            throw ExporterError.invalidDataObjectCasting
+        }
+    }
+    
+    static func exportPatients(_ patients: [Patient]) throws -> Data{
+        let stream = OutputStream(toMemory: ())
+        let csv = try CSVWriter(stream: stream)
+        
+        // Write CSV Header
+        try csv.write(row: headerRow)
+        
+        try patients.forEach {
+            try csv.write(row: rowFromPatient($0))
+        }
+        
+        csv.stream.close()
+        
+        if let csvData = stream.property(forKey: .dataWrittenToMemoryStreamKey) as? NSData {
+            return Data(referencing: csvData)
+        } else {
+            throw ExporterError.invalidDataObjectCasting
+        }
+    }
+    
+    private static func rowFromPatient(_ patient: Patient) throws -> [String] {
+        guard let resultsRealm = patient.results else { throw ExporterError.nilPatientResuls }
         
         let id = patient.id
         let freq500_20db = String(resultsRealm.freq500_20db)
@@ -82,14 +111,6 @@ class Exporter {
                  freq8000_40db,
                  freq8000_60db]
         
-        try csv.write(row: r)
-        
-        csv.stream.close()
-        
-        if let csvData = stream.property(forKey: .dataWrittenToMemoryStreamKey) as? NSData {
-            return Data(referencing: csvData)
-        } else {
-            throw ExporterError.invalidDataObjectCasting
-        }
+        return r
     }
 }
