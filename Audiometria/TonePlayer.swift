@@ -9,22 +9,25 @@
 import Foundation
 import AVFoundation
 
+public typealias PlayerTone = (frequency: Double, amplitude: Double)
+
 protocol PlayerInterface: class {
     func didStartPlaying(tone: PlayerTone)
     func didStopPlaying(tone: PlayerTone)
     func didOccurErrorInitializing(error: Error)
 }
 
-public typealias PlayerTone = (Frequency: Double, Amplitude: Double)
-
 class TonePlayer {
-    private var engine = AVAudioEngine()
-    private var firstToneTestStep: ToneTestStep?
-    private var tone = AVTonePlayerUnit()
     
     weak var interface: PlayerInterface?
     
-    init?() {
+    private var tone = AVTonePlayerUnit()
+    private var engine = AVAudioEngine()
+    private var firstToneTestStep: ToneTestStep?
+    
+    init() { setupAudio() }
+    
+    private func setupAudio() {
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
             let format = AVAudioFormat(standardFormatWithSampleRate: tone.sampleRate, channels: 1)
