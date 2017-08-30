@@ -101,7 +101,7 @@ class ToneTestViewController: UIViewController, PlayerInterface, TestInterface {
         
         let identifier = "ResultViewController"
         if let vc = storyboard?.instantiateViewController(withIdentifier: identifier) as? ResultViewController {
-            vc.results = results
+            vc.patient = Patient(results: ResultsRealm(resultsDictionary: results))
             navigationController?.pushViewController(vc, animated: true)
         } else {
             debugPrint("Nao achou a VC com id: \(identifier)")
