@@ -5,6 +5,8 @@
 //  Created by Henrique Valcanaia on 5/10/16.
 //  Copyright © 2016 darkshine. All rights reserved.
 //
+//  Implementation basede on
+//  https://github.com/ooper-shlab/ToneGenerator1.0-Swift/blob/master/ToneGenerator/AVTonePlayerUnit.swift
 
 import Foundation
 import AVFoundation
