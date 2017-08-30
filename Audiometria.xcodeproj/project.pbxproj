@@ -35,6 +35,7 @@
 		641101261F4D437800FC5993 /* Patient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641101251F4D437800FC5993 /* Patient.swift */; };
 		6423CE541F53E17300877F24 /* CSV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6423CE531F53E17300877F24 /* CSV.framework */; };
 		6423CE561F53F59F00877F24 /* Exporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6423CE551F53F59F00877F24 /* Exporter.swift */; };
+		64935A131F56747F0098FA46 /* SimpleMailComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64935A121F56747E0098FA46 /* SimpleMailComposer.swift */; };
 		64EE672D1E935F8D00DD973D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EE672C1E935F8D00DD973D /* MainViewController.swift */; };
 		64EE67301E93605B00DD973D /* AllResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64EE672F1E93605B00DD973D /* AllResultsViewController.swift */; };
 /* End PBXBuildFile section */
@@ -72,6 +73,7 @@
 		641101251F4D437800FC5993 /* Patient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Patient.swift; sourceTree = "<group>"; };
 		6423CE531F53E17300877F24 /* CSV.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CSV.framework; path = Carthage/Build/iOS/CSV.framework; sourceTree = "<group>"; };
 		6423CE551F53F59F00877F24 /* Exporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exporter.swift; sourceTree = "<group>"; };
+		64935A121F56747E0098FA46 /* SimpleMailComposer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleMailComposer.swift; sourceTree = "<group>"; };
 		64EE672C1E935F8D00DD973D /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Main/MainViewController.swift; sourceTree = "<group>"; };
 		64EE672F1E93605B00DD973D /* AllResultsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AllResultsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -146,6 +148,7 @@
 				622C77FB1CF3428E000C0D38 /* ResultViewController.swift */,
 				6423CE551F53F59F00877F24 /* Exporter.swift */,
 				62FDD0D31ECF6A4600C08E2C /* ResultTableViewCell.swift */,
+				64935A121F56747E0098FA46 /* SimpleMailComposer.swift */,
 			);
 			path = Result;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				6295C3E31CE2BBCD003B09E5 /* NSDate+Extensions.swift in Sources */,
 				6423CE561F53F59F00877F24 /* Exporter.swift in Sources */,
 				62BA15E41F4A7AE300CEFBDC /* ResultRealm.swift in Sources */,
+				64935A131F56747F0098FA46 /* SimpleMailComposer.swift in Sources */,
 				62E2787D1E941E950021D2A5 /* TestPresenter.swift in Sources */,
 				6295C3E81CE2C0B7003B09E5 /* Utils.swift in Sources */,
 				62882C1D1CEE235F000C426F /* CABasicAnimation+Extensions.swift in Sources */,
