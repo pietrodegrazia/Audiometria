@@ -39,26 +39,22 @@ class TonePlayer {
     }
     
     func play(amplitude: Double, frequency: Double) {
-        DispatchQueue.main.async {
-            self.tone.amplitude = amplitude
-            self.tone.frequency = frequency
-            
-            self.tone.preparePlaying()
-            self.tone.play()
-            self.engine.mainMixerNode.volume = 1.0
-            
-            let playerTone = PlayerTone(Amplitude: self.tone.amplitude, Frequency: self.tone.frequency)
-            self.interface?.didStartPlaying(tone: playerTone)
-        }
+        tone.amplitude = amplitude
+        tone.frequency = frequency
+        tone.preparePlaying()
+        tone.play()
+        
+        engine.mainMixerNode.volume = 1.0
+        
+        let playerTone = PlayerTone(amplitude: tone.amplitude, frequency: tone.frequency)
+        interface?.didStartPlaying(tone: playerTone)
     }
     
     func stop() {
-        DispatchQueue.main.async {
-            self.tone.stop()
-            self.engine.mainMixerNode.volume = 0.0
-            
-            let playerTone = PlayerTone(Amplitude: self.tone.amplitude, Frequency: self.tone.frequency)
-            self.interface?.didStopPlaying(tone: playerTone)
-        }
+        tone.stop()
+        engine.mainMixerNode.volume = 0.0
+        
+        let playerTone = PlayerTone(amplitude: tone.amplitude, frequency: tone.frequency)
+        interface?.didStopPlaying(tone: playerTone)
     }
 }
