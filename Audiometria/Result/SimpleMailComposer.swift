@@ -10,7 +10,7 @@ import Foundation
 import MessageUI
 
 protocol SimpleEmailComposer {
-    func sendEmailWithTitle(fileName: String, data: Data)
+    func sendEmailWithData(_ data: Data, fileName: String)
 }
 
 extension SimpleEmailComposer where Self: UIViewController, Self: MFMailComposeViewControllerDelegate {
