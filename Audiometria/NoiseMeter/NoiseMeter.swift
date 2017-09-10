@@ -9,13 +9,35 @@
 import AVFoundation
 import UIKit
 
+
+class SharedSession {
+    static let recorder: AVAudioRecorder = {
+        let currentFileName = "recording-\(Date().toStringWithFormat("yyyyMMdd-HH-mm-ss")).m4a"
+        let soundFilePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/" + currentFileName
+        let soundFileURL = URL(fileURLWithPath: soundFilePath)
+        let recordSettings: [String:AnyObject] = [
+            AVFormatIDKey: Int(kAudioFormatAppleLossless) as AnyObject,
+            AVEncoderAudioQualityKey : AVAudioQuality.max.rawValue as AnyObject,
+            AVEncoderBitRateKey : 320000 as AnyObject,
+            AVNumberOfChannelsKey: 2 as AnyObject,
+            AVSampleRateKey : 44100.0 as AnyObject
+        ]
+        
+        return try! AVAudioRecorder(url: soundFileURL, settings: recordSettings)
+    }()
+    
+    static let engine = AVAudioEngine()
+    
+    static let tonePlayerUnit = AVTonePlayerUnit()
+}
+
 class NoiseMeter {
     
     // MARK: Private vars
     fileprivate var currentPower = [Int:Float]()
     fileprivate var peakPower = [Int:Float]()
     fileprivate var measureTimer: Timer?
-    fileprivate var recorder: AVAudioRecorder!
+    fileprivate var recorder = SharedSession.recorder
     fileprivate var channels = [Int]()
     
     // MARK: Public vars
@@ -86,35 +108,21 @@ class NoiseMeter {
     fileprivate func setSessionPlayAndRecord() {
         do {
             let session = AVAudioSession.sharedInstance()
-            try session.setCategory(AVAudioSessionCategoryRecord)
             try session.setActive(true)
+            try session.setCategory(AVAudioSessionCategoryPlayAndRecord)
         } catch let error as NSError {
             delegate?.noiseMeter(self, didOccurrError: error)
         }
-        
     }
     
     fileprivate func setupRecorder() {
-        do {
-            let currentFileName = "recording-\(Date().toStringWithFormat("yyyyMMdd-HH-mm-ss")).m4a"
-            let soundFilePath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/" + currentFileName
-            let soundFileURL = URL(fileURLWithPath: soundFilePath)
-            let recordSettings: [String:AnyObject] = [
-                AVFormatIDKey: Int(kAudioFormatAppleLossless) as AnyObject,
-                AVEncoderAudioQualityKey : AVAudioQuality.max.rawValue as AnyObject,
-                AVEncoderBitRateKey : 320000 as AnyObject,
-                AVNumberOfChannelsKey: 2 as AnyObject,
-                AVSampleRateKey : 44100.0 as AnyObject
-            ]
-            
-            recorder = try AVAudioRecorder(url: soundFileURL, settings: recordSettings)
-            recorder.isMeteringEnabled = true
-            
-            if !recorder.prepareToRecord() {
-                delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.errorPreparingToRecord)
-            }
-        } catch let error as NSError {
-            delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.errorCreatingRecorder(error))
+        
+        
+        
+        recorder.isMeteringEnabled = true
+        
+        if !recorder.prepareToRecord() {
+            delegate?.noiseMeter(self, didOccurrError: NoiseMeterError.errorPreparingToRecord)
         }
     }
     
