@@ -21,18 +21,21 @@ class TonePlayer {
     
     weak var interface: PlayerInterface?
     
-    private var tone = AVTonePlayerUnit()
-    private var engine = AVAudioEngine()
+    private var tone = SharedSession.tonePlayerUnit
+    private var engine = SharedSession.engine
     private var firstToneTestStep: ToneTestStep?
     
     init() { setupAudio() }
     
     private func setupAudio() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
             let format = AVAudioFormat(standardFormatWithSampleRate: tone.sampleRate, channels: 1)
             let mixer = engine.mainMixerNode
-            
+            if engine.isRunning {
+                engine.detach(tone)
+                engine.reset()
+            }
             engine.attach(tone)
             engine.connect(tone, to: mixer, format: format)
             try engine.start()
