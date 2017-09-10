@@ -46,7 +46,7 @@ func amplitudeReal(frequency: Frequency, amplitudeAPI: AmplitudeAPI) -> Amplitud
         return val.key
     } else {
         print("(\(frequency), \((amplitudeAPI)))")
-        assertionFailure("Deu ruim!")
+//        assertionFailure("Não tem suporte à esta amplitude na frequencia de \(frequency)!")
         return 0
     }
 }
@@ -57,7 +57,7 @@ func amplitudeAPI(frequency: Frequency, amplitudeReal: AmplitudeReal) -> Amplitu
         return filtered
     } else {
         print("(\(frequency), \((amplitudeReal))")
-        assertionFailure("Deu ruim!")
+//        assertionFailure("Não tem suporte à esta amplitude na frequencia de \(frequency)!")
         return 0
     }
 }
