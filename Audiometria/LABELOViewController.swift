@@ -22,8 +22,8 @@ class LABELOViewController: UITableViewController {
     
     @IBOutlet weak var playBtn: UIButton!
     
-    fileprivate var tone = AVTonePlayerUnit()
-    fileprivate var engine = AVAudioEngine()
+    fileprivate var tone = SharedSession.tonePlayerUnit
+    fileprivate var engine = SharedSession.engine
     
     fileprivate var isPlaying = false
     
@@ -63,7 +63,12 @@ class LABELOViewController: UITableViewController {
     }
     
     @IBAction func slideFrequency(_ sender: UISlider) {
-        let mappedValue = map(x: NSNumber(value: sender.value), inMin: NSNumber(value: 0), inMax: NSNumber(value: 1), outMin: NSNumber(value: FrequencyConfig.min), outMax: NSNumber(value: FrequencyConfig.max))
+        let mappedValue = map(x: NSNumber(value: sender.value),
+                              inMin: NSNumber(value: 0),
+                              inMax: NSNumber(value: 1),
+                              outMin: NSNumber(value: FrequencyConfig.min),
+                              outMax: NSNumber(value: FrequencyConfig.max))
+        
         print(mappedValue)
         emissionFrequencyTextField.text = "\(mappedValue)"
         tone.frequency = mappedValue.doubleValue
