@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ur8-13-Jby">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="ur8-13-Jby">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -107,12 +107,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6aZ-Bp-o9v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2038" y="628"/>
+            <point key="canvasLocation" x="2286" y="233"/>
         </scene>
-        <!--View Controller-->
+        <!--All Results View Controller-->
         <scene sceneID="oWS-4H-7pA">
             <objects>
-                <viewController id="wbJ-2s-sWR" sceneMemberID="viewController">
+                <viewController id="wbJ-2s-sWR" customClass="AllResultsViewController" customModule="Ouviu" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bvU-zI-iEm"/>
                         <viewControllerLayoutGuide type="bottom" id="huj-mL-Ot7"/>
@@ -141,11 +141,12 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="Tgw-RJ-COj" kind="show" identifier="ShowResult" id="uF6-l3-K4Q"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="wbJ-2s-sWR" id="MGa-wz-h7W"/>
+                                    <outlet property="delegate" destination="wbJ-2s-sWR" id="Q3z-LP-PfW"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -156,10 +157,14 @@
                             <constraint firstAttribute="trailing" secondItem="FEV-P6-X6J" secondAttribute="trailing" id="v9l-4y-iZR"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="FEV-P6-X6J" id="aYM-Wd-xCL"/>
+                        <segue destination="Tgw-RJ-COj" kind="show" identifier="ShowResult" id="5eR-y0-LN4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3q1-Ri-0fX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1716" y="1417"/>
+            <point key="canvasLocation" x="1886" y="912"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="vkk-eW-kf4">
@@ -346,7 +351,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7pQ-mc-r7G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1329" y="-73"/>
+            <point key="canvasLocation" x="622" y="-82"/>
         </scene>
         <!--Resultado-->
         <scene sceneID="baU-BV-4Jx">
@@ -372,14 +377,14 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rk4-CG-3RT">
-                                                    <rect key="frame" x="8" y="11.5" width="35" height="35"/>
+                                                    <rect key="frame" x="8" y="21" width="16" height="16"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="35" id="3Pm-7s-udO"/>
-                                                        <constraint firstAttribute="width" constant="35" id="iC5-wg-qKc"/>
+                                                        <constraint firstAttribute="height" constant="16" id="3Pm-7s-udO"/>
+                                                        <constraint firstAttribute="width" constant="16" id="iC5-wg-qKc"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y5b-Yj-Xoe">
-                                                    <rect key="frame" x="51" y="19" width="316" height="21"/>
+                                                    <rect key="frame" x="40" y="19" width="327" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -387,7 +392,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="y5b-Yj-Xoe" secondAttribute="trailing" id="9gi-iT-NyI"/>
-                                                <constraint firstItem="y5b-Yj-Xoe" firstAttribute="leading" secondItem="Rk4-CG-3RT" secondAttribute="trailing" constant="8" id="PDn-8L-LB2"/>
+                                                <constraint firstItem="y5b-Yj-Xoe" firstAttribute="leading" secondItem="Rk4-CG-3RT" secondAttribute="trailing" constant="16" id="PDn-8L-LB2"/>
                                                 <constraint firstItem="Rk4-CG-3RT" firstAttribute="leading" secondItem="NzI-WJ-Ff4" secondAttribute="leading" constant="8" id="Veb-8T-Mjb"/>
                                                 <constraint firstItem="y5b-Yj-Xoe" firstAttribute="centerY" secondItem="NzI-WJ-Ff4" secondAttribute="centerY" id="eMW-vC-brf"/>
                                                 <constraint firstItem="Rk4-CG-3RT" firstAttribute="centerY" secondItem="NzI-WJ-Ff4" secondAttribute="centerY" id="h99-ZJ-fAT"/>
@@ -415,7 +420,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bik-kY-70s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2936.8000000000002" y="649.92503748125944"/>
+            <point key="canvasLocation" x="3290" y="645"/>
         </scene>
         <!--Noise Meter View Controller-->
         <scene sceneID="DWG-Wc-vkN">
@@ -481,7 +486,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sam-05-b6n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1328.8" y="628.33583208395805"/>
+            <point key="canvasLocation" x="1538" y="233"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="CDn-xB-4ZV">
@@ -551,6 +556,6 @@
         <image name="playing" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="uF6-l3-K4Q"/>
+        <segue reference="5eR-y0-LN4"/>
     </inferredMetricsTieBreakers>
 </document>
