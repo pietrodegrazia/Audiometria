@@ -34,6 +34,21 @@ class ToneTestViewController: UIViewController, PlayerInterface, TestInterface {
         eventHandler.interface = self
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        timer.invalidate()
+        player.stop()
+        eventHandler.stopTest()
+        player.interface = nil
+        eventHandler.interface = nil
+    }
+    
+    deinit {
+        player.stop()
+        eventHandler.stopTest()
+        player.interface = nil
+        eventHandler.interface = nil
+    }
+    
     // MARK: - Private helpers
     private func createTimer(withTimerInterval interval: TimeInterval) {
         timer.invalidate()

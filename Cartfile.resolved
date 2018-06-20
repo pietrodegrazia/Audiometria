@@ -1,2 +1,2 @@
-github "yaslab/CSV.swift" "2.0.1"
-github "realm/realm-cocoa" "v2.10.0"
+github "realm/realm-cocoa" "v3.7.4"
+github "yaslab/CSV.swift" "2.2.1"

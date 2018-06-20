@@ -36,7 +36,7 @@ public struct Constants {
         
         (500, -1, 20),
         (500,  1, 40),
-        (500, -2, 60),
+        (500, -1, 60),
         ]
 }
 
@@ -127,12 +127,12 @@ class TestInteractor {
             return tone
         }
         
-        let amplitudeReal = Constants.iPodTouchConversionTable
+        let amplitudeRealCurrent = Constants.iPodTouchConversionTable
             .filter { $0.0 == Int(currentStep.frequency) }
             .filter { abs($0.1 - currentStep.amplitude) <= 1e-3 }
             .first!.2
         
-        if initialAmplitude == amplitudeReal {
+        if amplitudeRealCurrent == initialAmplitude {
             let frequencyData = iPodTouchAmplitudeRealTable[currentStep.frequency]!
             let amplitudeReal = Double(frequencyData[didHear]!)
             return ToneTestStep(frequency: currentStep.frequency, amplitude: amplitudeReal)
@@ -153,3 +153,10 @@ class TestInteractor {
     }
     
 }
+
+func ==(lhs: Double, rhs: Double) -> Bool {
+    let threshold = 1e-3
+    return (abs(lhs - rhs) <= threshold)
+}
+
+

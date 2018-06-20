@@ -75,8 +75,8 @@ protocol TestInterface {
 class TestPresenter {
     
     private struct ToneDuration {
-        static let betweenAmplitude: TimeInterval = 1
-        static let betweenFrequency: TimeInterval = 0.5
+        static let betweenAmplitude: TimeInterval = 4
+        static let betweenFrequency: TimeInterval = 2
     }
     
     // MARK: - Public vars
@@ -156,8 +156,9 @@ class TestPresenter {
         
         while (step != nil && step!.amplitude < 0) {
             currentResult = (step!.amplitude < 0) ? .outOfRange : .heard
-            currentStep = step
             step = interactor.step(currentStep, didHear: heard)
+            step?.amplitude = iPodTouchAmplitudeAPITable[step!.frequency]![Int(step!.amplitude)]!
+            currentStep = step
         }
         
         if step == nil {
