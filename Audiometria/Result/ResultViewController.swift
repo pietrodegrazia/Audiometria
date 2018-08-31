@@ -59,14 +59,28 @@ class ResultViewController: UIViewController, SimpleEmailComposer {
         
         savePatientOnRealm(patient)
         setupNavigationBar()
-        populateDataSourceWith(results)
+        populateDataSourceWith(fixOutOfRangeResults(results))
         tableView.reloadData()
+    }
+    
+    private func fixOutOfRangeResults(_ results: Results) -> Results{
+        return results.mapValues { results -> [ResultTuple] in
+            return results.map( { (result: ResultTuple) -> ResultTuple in
+                if (result.amplitude == -1) {
+                    var mutableResult = result
+                    mutableResult.result = .outOfRange
+                    return mutableResult
+                }
+                return result
+            })
+        }
     }
     
     private func populateDataSourceWith(_ results: Results) {
         for (key, value) in results {
             objectArray.append(Objects(sectionName: key, sectionObjects: value))
         }
+        objectArray.sort { $0.sectionName < $1.sectionName }
     }
     
     private func setupNavigationBar() {
