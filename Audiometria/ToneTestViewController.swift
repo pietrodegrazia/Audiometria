@@ -88,8 +88,10 @@ class ToneTestViewController: UIViewController, PlayerInterface, TestInterface {
         DispatchQueue.main.async {
             self.userHeardButton.isEnabled = true
             
-            self.currentFrequencyLabel.text = "Frequência: \(tone.frequency)"
-            self.currentAmplitudeLabel.text = "Amplitude: \(tone.amplitude)"
+            let readableAmplitude = amplitudeReal(frequency: Frequency(tone.frequency), amplitudeAPI: tone.amplitude)
+            
+            self.currentAmplitudeLabel.text = "Amplitude: \(readableAmplitude) dB"
+            self.currentFrequencyLabel.text = "Frequência: \(tone.frequency) Hz"
             
             self.soundPlayingImageView.image = #imageLiteral(resourceName: "playing")
         }
